@@ -8,9 +8,9 @@
 - C++ >= 98
 
 # Preprocessor check
-- _WIN64 (aka _WIN)
-- _WIN32 (aka _WIN)
-- __APPLE__
-- __linux
-- __unix
-- __posix
+- `_WIN64 (aka _WIN)`
+- `_WIN32 (aka _WIN)`
+- `__APPLE__`
+- `__linux`
+- `__unix`
+- `__posix`
