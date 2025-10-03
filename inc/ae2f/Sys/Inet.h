@@ -60,7 +60,7 @@
 /// For releasing, see @ref ae2f_InetDel.
 ///
 /// Linux needs no startup for Inetet api. It will always success.
-#define ae2f_SysInetMk(...) 0
+#define ae2f_SysInetMk(a, b) ((void)0)
 
 /// @brief
 /// Library release function.

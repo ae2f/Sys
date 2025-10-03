@@ -27,7 +27,7 @@
 #include <c89atomic.h>
 #include <sched.h>
 #include <linux/sched.h>
-#include <linux/signal.h>
+#include <signal.h>
 #include "./Ftx.h"
 
 #define	_ae2f_SysThrdRes_t	int
@@ -71,6 +71,8 @@ static int	_ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {
 
 		syscall(SYS_exit, 0);
 	}
+
+	syscall(SYS_exit, -1);
 }
 
 #else
