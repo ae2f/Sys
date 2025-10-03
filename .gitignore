@@ -1,3 +1,9 @@
+submod
+build
+out
+*.auto.*
+.*/
+
 # Prerequisites
 *.d
 
