@@ -51,9 +51,9 @@ ae2f_structdef(struct, _ae2f_SysThrdRunnerPrm_t)
 
 ae2f_structdef(union, _ae2f_SysThrdStckPtr_t)
 {
-	void* restrict				m_void;
-	char* restrict				m_char;
-	_ae2f_SysThrdRunnerPrm_t* restrict	m_prm;
+	void* ae2f_restrict				m_void;
+	char* ae2f_restrict				m_char;
+	_ae2f_SysThrdRunnerPrm_t* ae2f_restrict	m_prm;
 };
 
 static int	_ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {

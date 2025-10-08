@@ -53,6 +53,7 @@ ae2f_MAC() __linux_ae2f_SysThrdMk_imp_call(
 			puts("terminating, and child has made by SYS_clone3");
 			syscall(SYS_exit, 0);
 		default:
+			puts("syscall has doomed.");
 			;
 	}
 
