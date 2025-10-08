@@ -26,8 +26,9 @@ cmake -S . -B $builddir \
 	-DCMAKE_CXX_STANDARD=$stdcc \
 	$maker $1 $2 \
 	-Dae2f_CXX=$_ae2f_CXX \
-	-Dae2f_IS_SHARED=$_ae2f_IS_SHARED || { echo "Configuration failed"; exit 1; } \
-	-Dae2f_MAC_BUILD=$_ae2f_MAC_BUILD
+	-Dae2f_IS_SHARED="$_ae2f_IS_SHARED \
+	-Dae2f_MAC_BUILD=$_ae2f_MAC_BUILD \
+  || { echo "Configuration failed"; exit 1; } 
 
 cmake --build $builddir --config $buildtype || { echo "Build failed"; exit 1; }
 ctest --test-dir $builddir -C $buildtype || { echo "Test failed"; exit 1; }
