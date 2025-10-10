@@ -177,7 +177,7 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 		const size_t		prm_stcksz
 		)
 {
-	(ret_stat).m_id = 
+	(ret_thrd).m_id = 
 		CreateThread(
 				NULL
 				, prm_stcksz
@@ -187,7 +187,7 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 				, NULL
 			    );
 
-	unless((ret_stat).m_id) {
+	unless((ret_thrd).m_id) {
 		(ret_stat) = ae2f_eSysThrdErr;
 	} else 
 		(ret_stat) = ae2f_eSysThrdSuccess;
