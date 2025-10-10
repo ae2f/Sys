@@ -20,6 +20,14 @@
 
 #elif	ae2f_Sys__linux(!)0
 
+/**
+ * @macro __ae2f_SysThrdStckTopOper
+ * A macro to make top pointer.
+ * */
+#ifndef __ae2f_SysThrdStckTopOper
+#define __ae2f_SysThrdStckTopOper(prm_ptr, prm_sz)	((prm_ptr) + (prm_sz))
+#endif
+
 #define _GNU_SOURCE
 #include <sys/mman.h>
 #include <sys/syscall.h>
@@ -56,7 +64,7 @@ ae2f_structdef(union, _ae2f_SysThrdStckPtr_t)
 	_ae2f_SysThrdRunnerPrm_t* ae2f_restrict	m_prm;
 };
 
-static int	_ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {
+static void	_ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {
 
 	if(prm_stck) {
 		/** child section */

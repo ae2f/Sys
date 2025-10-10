@@ -30,7 +30,7 @@ struct timespec;
 
 #if ae2f_Sys__linux(!)0
 
-#include <stdio.h>
+#include <errno.h>
 
 ae2f_MAC() __linux_ae2f_SysThrdMk_imp_call(
 		ae2f_eSysThrd_t			ret_stat,
@@ -41,22 +41,6 @@ ae2f_MAC() __linux_ae2f_SysThrdMk_imp_call(
 		size_t				prm_stcksz
 		)
 {
-	struct clone_args v_args;
-	v_args.stack = ae2f_reinterpret_cast(ptrdiff_t, prm_stck);
-	v_args.stack_size = prm_stcksz;
-	v_args.flags = (CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM);
-	v_args.exit_signal = SIGCHLD;
-
-	switch(syscall(__NR_clone3, &v_args, sizeof(v_args)))
-	{
-		case 0:
-			puts("terminating, and child has made by SYS_clone3");
-			syscall(SYS_exit, 0);
-		default:
-			puts("syscall has doomed.");
-			;
-	}
-
 	(ret_tid) = clone(
 			ae2f_reinterpret_cast(ae2f_SysThrdFn_t*, _ae2f_SysThrdRunner)
 			, (prm_stcktop)
@@ -117,7 +101,7 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 				ret_stat, (ret_thrd).m_id
 				, prm_func
 				, (ret_thrd).m_stck.m_prm
-				, ((ret_thrd).m_stck.m_char + (prm_stcksz))
+				, __ae2f_SysThrdStckTopOper(((ret_thrd).m_stck.m_char), (prm_stcksz))
 				, prm_stcksz
 				);
 
@@ -246,11 +230,11 @@ ae2f_MAC() ae2f_SysThrdSleep_imp(
 		SetLastError(ERROR_INVALID_PARAMETER);
 		(ret_stat) = -1;
 	} else do {
-		DWORD ms = (DWORD)(req->tv_sec * 1000 + req->tv_nsec / 1000000);
+		DWORD ms = (DWORD)((req)->tv_sec * 1000 + (req)->tv_nsec / 1000000);
 		Sleep(ms);
 		if (rem != NULL) {
-			rem->tv_sec = 0;
-			rem->tv_nsec = 0;
+			(rem)->tv_sec = 0;
+			(rem)->tv_nsec = 0;
 		}
 		(ret_stat) = 0;
 	} while(0);
