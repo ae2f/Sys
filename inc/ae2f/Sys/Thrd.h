@@ -55,10 +55,10 @@ ae2f_structdef(struct, ae2f_SysThrd)
 	ae2f_SysThrdID_t	m_id;
 
 	/** stack ptr (linux only) */
-	ae2f_Sys__linux(_ae2f_SysThrdStckPtr_t	m_stck);
+	ae2f_Sys__linux(_ae2f_SysThrdStckPtr_t	m_stck;)
 
 	/** stack size (linux only) */
-	ae2f_Sys__linux(size_t	m_stcksz);
+	ae2f_Sys__linux(size_t	m_stcksz;)
 };
 
 #endif
