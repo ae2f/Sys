@@ -204,7 +204,7 @@ ae2f_MAC() ae2f_SysThrdJoin_imp(
 				WaitForSingleObject((prm_thrd).m_id, INFINITE) 
 				&& GetExitCodeThread((prm_thrd).m_id, &(ret_rtn))
 				&& CloseHandle((prm_thrd).m_id)
-		  ) ? 0 : ae2f_eSysThrdErr;
+		  ) ? ae2f_eSysThrdSuccess : ae2f_eSysThrdErr;
 }
 
 
@@ -222,19 +222,18 @@ ae2f_MAC() ae2f_SysThrdSleep_imp(
 {
 	if (
 			(prm_req) == NULL || 
-			(req)->tv_sec < 0 || 
-			(req)->tv_nsec < 0 || 
-			(req)->tv_nsec >= 1000000000
+			(prm_req)->tv_sec < 0 || 
+			(prm_req)->tv_nsec < 0 || 
+			(prm_req)->tv_nsec >= 1000000000
 	   )
 	{
 		SetLastError(ERROR_INVALID_PARAMETER);
 		(ret_stat) = -1;
 	} else do {
-		DWORD ms = (DWORD)((req)->tv_sec * 1000 + (req)->tv_nsec / 1000000);
-		Sleep(ms);
-		if (rem != NULL) {
-			(rem)->tv_sec = 0;
-			(rem)->tv_nsec = 0;
+		Sleep((DWORD)((prm_req)->tv_sec * 1000 + (prm_req)->tv_nsec / 1000000));
+		if ((prm_rem) != NULL) {
+			(prm_rem)->tv_sec = 0;
+			(prm_rem)->tv_nsec = 0;
 		}
 		(ret_stat) = 0;
 	} while(0);
