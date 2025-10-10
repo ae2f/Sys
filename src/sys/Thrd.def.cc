@@ -201,7 +201,7 @@ ae2f_MAC() ae2f_SysThrdJoin_imp(
 {
 	(ret_stat)
 		= (
-				WaitForSingleObject((prm_thrd).m_id) 
+				WaitForSingleObject((prm_thrd).m_id, INFINITE) 
 				&& GetExitCodeThread((prm_thrd).m_id, &(ret_rtn))
 				&& CloseHandle((prm_thrd).m_id)
 		  ) ? 0 : ae2f_eSysThrdErr;
