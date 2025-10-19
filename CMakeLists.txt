@@ -19,7 +19,7 @@ if(NOT TARGET ae2f::Sys)
 
 	ae2f_Macro_init(1 30 30)
 	ae2f_Macro_Lib_V(
-    ae2f Sys INTERFACE
+		ae2f Sys INTERFACE
 		${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
 		${PROJECT_SOURCE_DIR}/src/sys "*.def.cc" 
 		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
@@ -34,9 +34,9 @@ if(NOT TARGET ae2f::Sys)
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 
-  target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Core)
-  target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
-  target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Core)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
 
 	ae2f_CoreTestTent(${ae2f__Sys__TENT} test/primal)
 endif()

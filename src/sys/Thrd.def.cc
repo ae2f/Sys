@@ -51,7 +51,7 @@ ae2f_MAC() __linux_ae2f_SysThrdMk_imp_call(
 	if((ret_tid) == -1) {
 		(ret_stat) = ae2f_eSysThrdErr;
 
-	} else if((ret_tid) == 0) 
+	} else if((ret_tid) == 0)
 	{
 		syscall(SYS_exit, 0);
 	}

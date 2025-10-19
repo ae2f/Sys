@@ -9,6 +9,9 @@
 
 #if ae2f_Sys_WIN(!)0
 
+#define ae2f_SysFtxLibDefine(key_export)
+#define ae2f_SysFtxLibDeclare(key_extern)
+
 ae2f_MAC() ae2f_SysFtxWait(
 		ae2f_SysFtxRet_t	ret_err,
 		ae2f_SysFtxEl_t* const	prm_uaddr,
@@ -29,6 +32,9 @@ ae2f_MAC() ae2f_SysFtxWakeOne(
 }
 
 #elif ae2f_Sys__linux(!)0
+
+#define ae2f_SysFtxLibDefine(key_export)
+#define ae2f_SysFtxLibDeclare(key_extern)
 
 ae2f_MAC() ae2f_SysFtxWait(
 		ae2f_SysFtxRet_t	ret_err,
@@ -54,8 +60,20 @@ ae2f_MAC() ae2f_SysFtxWakeOne(ae2f_SysFtxRet_t ret_err, ae2f_SysFtxEl_t* const p
 
 #else
 
-static pthread_mutex_t __ae2f_sSysFtxMtx = PTHREAD_MUTEX_INITIALIZER;
-static pthread_cond_t __ae2f_sSysFtxCnd = PTHREAD_COND_INITIALIZER;
+#define ae2f_SysFtxLibDefine(key_export) \
+	key_export pthread_mutex_t __ae2f_gSysFtxMtx = PTHREAD_MUTEX_INITIALIZER; \
+key_export pthread_cond_t __ae2f_gSysFtxCnd = PTHREAD_COND_INITIALIZER;
+
+
+#define ae2f_SysFtxLibDeclare(key_extern) \
+	key_extern pthread_mutex_t	__ae2f_gSysFtxMtx; \
+key_extern pthread_cond_t	__ae2f_gSysFtxCnd;
+
+
+#if __ae2f_MACRO_GENERATED
+#else
+ae2f_SysFtxLibDeclare()
+#endif
 
 ae2f_MAC() ae2f_SysFtxWait(
 		ae2f_SysFtxRet_t	ret_err,
@@ -63,15 +81,14 @@ ae2f_MAC() ae2f_SysFtxWait(
 		const int		prm_val
 		)
 {
-
-	if(pthread_mutex_lock(&__ae2f_sSysFtxMtx))
+	if(pthread_mutex_lock(&__ae2f_gSysFtxMtx))
 	{
 		errno = EAGAIN;
 		(ret_err) = -1;
 	} else do {
 		while(*(prm_uaddr) == (v))
 		{
-			if(pthread_cond_wait(&__ae2f_sSysFtxCnd, &__ae2f_sSysFtxMtx))
+			if(pthread_cond_wait(&__ae2f_gSysFtxCnd, &__ae2f_gSysFtxMtx))
 			{
 				errno = EAGAIN;
 				(ret_err) = -1;
@@ -81,7 +98,7 @@ ae2f_MAC() ae2f_SysFtxWait(
 
 		if((ret_err)) break;
 
-		if(pthread_mutex_unlock(&__ae2f_sSysFtxMtx))
+		if(pthread_mutex_unlock(&__ae2f_gSysFtxMtx))
 		{
 			errno = EAGAIN;
 			(ret_err) = -1;
@@ -94,18 +111,18 @@ ae2f_MAC() ae2f_SysFtxWait(
 
 ae2f_MAC() ae2f_SysFtxWakeOne(ae2f_SysFtxRet_t ret_err, ae2f_SysFtxEl_t* const prm_uaddr)
 {
-	if(pthread_mutex_lock(&__ae2f_sSysFtxMtx))
+	if(pthread_mutex_lock(&__ae2f_gSysFtxMtx))
 	{
 		errno = EAGAIN;
 		(ret_err) = -1;
 	} else do {
-		if(pthread_cond_signal(&(__ae2f_sSysFtxMtx))) {
+		if(pthread_cond_signal(&(__ae2f_gSysFtxMtx))) {
 			errno = EAGAIN;
 			(ret_err) = -1;
 			break;
 		}
 
-		if(pthread_mutex_unlock(&(__ae2f_sSysFtxMtx))) {
+		if(pthread_mutex_unlock(&(__ae2f_gSysFtxMtx))) {
 			errno = EAGAIN;
 			(ret_err) = -1;
 			break;
