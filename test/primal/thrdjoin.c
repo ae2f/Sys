@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <time.h>
 
-ae2f_SysFtxLibDeclare(static);
 ae2f_SysFtxLibDefine(static);
 
 ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
@@ -22,7 +21,7 @@ ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
 
 int main() {
 	register ae2f_eSysThrd_t	ret_stat = 0;
-	register ae2f_SysThrd		ret_thrd0, ret_thrd1;
+	ae2f_SysThrd		ret_thrd0, ret_thrd1;
 
 	register ae2f_SysThrdRes_t	ret_rtn;
 
