@@ -71,8 +71,10 @@ key_extern pthread_cond_t	__ae2f_gSysFtxCnd;
 
 
 #if __ae2f_MACRO_GENERATED
+
 #else
-ae2f_SysFtxLibDeclare()
+ae2f_SysFtxLibDeclare(static)
+ae2f_SysFtxLibDefine(static)
 #endif
 
 ae2f_MAC() ae2f_SysFtxWait(

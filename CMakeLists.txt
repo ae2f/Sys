@@ -21,7 +21,7 @@ if(NOT TARGET ae2f::Sys)
 	ae2f_Macro_Lib_V(
 		ae2f Sys INTERFACE
 		${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
-		${PROJECT_SOURCE_DIR}/src/sys "*.def.cc" 
+		${PROJECT_SOURCE_DIR}/src/sys "*.def.c*" 
 		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
 		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in inc
 		inc/ae2f/Sys.h ${sys-inc}
