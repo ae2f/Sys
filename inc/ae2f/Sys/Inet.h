@@ -11,7 +11,6 @@
 #ifndef ae2f_Inet_h
 #define ae2f_Inet_h
 
-#include <ae2f/Call.h>
 #include <ae2f/Cast.h>
 #include "../Sys.h"
 #include "./WSock.h"

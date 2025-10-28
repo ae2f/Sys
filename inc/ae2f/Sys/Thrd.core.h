@@ -7,6 +7,7 @@
 
 #include <ae2f/LangVer.h>
 #include <ae2f/Cast.h>
+#include <ae2f/Keys.h>
 
 #include "../Sys.h"
 
