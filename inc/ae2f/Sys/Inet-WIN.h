@@ -12,6 +12,9 @@
 #include <winsock2.h>
 #include <windows.h>
 
+
+#pragma comment(lib, "ws2_32")
+
 /**
  * @def ae2f_SysInetMkData_WIN
  * @brief
