@@ -29,7 +29,7 @@ typedef enum {
 
 	/** @brief Invalid pointer to ae2f_SysFtxEl_t. */
 	ae2f_SysFtxWait_PTRINVAL 
-		ae2f_Sys__linux(=EFAULT),
+		N_ae2f_Sys_WIN(=EFAULT),
 
 	/** @brief Invalid arguments (or not initialised) */
 	ae2f_SysFtxWait_INVAL 
@@ -73,7 +73,7 @@ typedef enum {
 
 	/** @brief Invalid pointer to uaddr */
 	ae2f_SysFtxWake_PTRINVAL 
-		ae2f_Sys__linux(= EFAULT),
+		N_ae2f_Sys_WIN(= EFAULT),
 
 	/** @brief Not initialised */
 	ae2f_SysFtxWake_INVAL 
