@@ -38,7 +38,7 @@ int main() {
 			, ret_thrd0
 			, AThreadNotifier
 			, NULL
-			, 1024 * 512
+			, 1024 * 1024
 			);
 
 	_ae2f_SysThrdMk_imp(
@@ -46,7 +46,7 @@ int main() {
 			, ret_thrd1
 			, AThreadNotifier
 			, NULL
-			, 1024 * 512
+			, 1024 * 1024
 			);
 #else
 #endif
