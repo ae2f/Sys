@@ -15,7 +15,6 @@
 #pragma comment(lib, "synchronization")
 
 #define	_ae2f_SysFtxEl_WIN	volatile LONG
-#define _ae2f_SysFtxRet_WIN	BOOL
 
 #define ae2f_SysFtxLibDefine_WIN(tprm_export)
 #define ae2f_SysFtxLibDeclare_WIN(tprm_import)
