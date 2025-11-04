@@ -10,6 +10,7 @@
 #if ae2f_Sys_WIN(!)0
 
 #include <winsock2.h>
+#include <windows.h>
 
 /**
  * @def ae2f_SysInetMkData_WIN
