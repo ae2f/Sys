@@ -123,7 +123,7 @@ ae2f_MAC() ae2f_SysThrdJoin_imp(
 		const ae2f_SysThrd	prm_thrd
 		)
 {
-	ae2f_SysFtxRet_t v_res;
+	ae2f_eSysFtxWait v_res;
 
 	unless((prm_thrd).m_stck.m_void) {
 		(ret_stat) = ae2f_eSysThrdErr;

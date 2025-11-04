@@ -10,11 +10,19 @@ project(Sys VERSION 0.0.0)
 
 include(cmake/Core.cmake)
 
-if(NOT TARGET ae2f::Sys)
-	ae2f_CoreLibFetchX(ae2f Core	main)
+# FIXME
+if(NOT TARGET ae2f::SysCore)
 	ae2f_CoreLibFetchX(ae2f Preproc	main)
-	ae2f_CoreLibFetchX(ae2f	c89atomic master)
+	ae2f_CoreLibFetchX(ae2f Core	main)
 
+	ae2f_CoreLibTentConfigCustom(
+		SysCore INTERFACE inc ae2f 
+		${PROJECT_SOURCE_DIR}/Config/Sys-Base.cmake.in
+		)
+endif()
+
+if(NOT TARGET ae2f::Sys)
+	ae2f_CoreLibFetchX(ae2f	c89atomic master)
 	file(GLOB_RECURSE sys-inc inc/ae2f/Sys/*)
 
 	ae2f_Macro_init(1 30 30)
@@ -23,12 +31,14 @@ if(NOT TARGET ae2f::Sys)
 		${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
 		${PROJECT_SOURCE_DIR}/src/sys "*.def.c*" 
 		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
-		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in inc
+		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
+		inc
 		inc/ae2f/Sys.h ${sys-inc}
 		)
 
-	install(TARGETS c89atomic c89atomic_common
-		EXPORT ae2f-SysTargets
+	install(
+		TARGETS c89atomic c89atomic_common
+		EXPORT ${ae2f__Sys__TENT}Targets
 		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
@@ -39,4 +49,5 @@ if(NOT TARGET ae2f::Sys)
 	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
 
 	ae2f_CoreTestTent(${ae2f__Sys__TENT} test/primal)
+	ae2f_CoreTestTent(${ae2f__Sys__TENT} test/enums)
 endif()

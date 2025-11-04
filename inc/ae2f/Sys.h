@@ -82,4 +82,10 @@ typedef char ae2f_Sys_ASSERT_NO_HOST_DETECTED[-1];
 typedef char ae2f_Sys_ASSERT_NO_HOST_DETECTED[-1];
 #endif
 
+/**
+ * @typedef ae2f_Sys_unused_t
+ * @brief Type which is unused 
+ * */
+typedef char ae2f_Sys_unused_t;
+
 #endif

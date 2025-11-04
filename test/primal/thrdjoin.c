@@ -1,6 +1,10 @@
 #include <ae2f/Sys/Thrd.h>
 #include <stdio.h>
 #include <time.h>
+#include <assert.h>
+
+
+int A = 0;
 
 ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
 	struct timespec	req, rem;
@@ -12,6 +16,7 @@ ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
 	printf("Thread child is starting\n");
 
 	_ae2f_SysThrdSleep_imp(done, &req, &rem);
+	A = 1;
 
 	printf("Thread child is ending\n");
 	return ae2f_reinterpret_cast(ae2f_SysThrdRes_t, 3);
@@ -73,6 +78,9 @@ int main() {
 
 
 	puts("Thread main is ending");
+
+	assert(A == 1);
+	puts("GOOD");
 
 	return 0;
 }

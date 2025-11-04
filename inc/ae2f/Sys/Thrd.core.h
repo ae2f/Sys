@@ -5,7 +5,6 @@
 #ifndef	ae2f_Sys_Thrd_core_h
 #define	ae2f_Sys_Thrd_core_h
 
-#include <ae2f/LangVer.h>
 #include <ae2f/Cast.h>
 #include <ae2f/Keys.h>
 
@@ -38,12 +37,13 @@
 #include <linux/sched.h>
 #include <signal.h>
 #include "./Ftx.h"
+#include <ae2f/c90/StdInt.h>
 
 #define	_ae2f_SysThrdRes_t	int
 #define _ae2f_SysThrdPrm_t	void*
 #define _ae2f_SysThrdID_t	int
 
-ae2f_structdef(struct, _ae2f_SysThrdRunnerPrm_t)
+typedef struct 
 {
 	int			m_ret;
 	/** 
@@ -51,12 +51,12 @@ ae2f_structdef(struct, _ae2f_SysThrdRunnerPrm_t)
 	 * This member must not be changed by multiple threads
 	 * */
 	ae2f_SysFtxEl_t		m_done;
-	ae2f_SysFtxRet_t	m_ftxret;
+	int_least64_t	m_ftxret;
 
 	int		(*m_fn)(void*);
 	void*		m_arg;
 	size_t		m_stcksz;
-};
+} _ae2f_SysThrdRunnerPrm_t;
 
 ae2f_structdef(union, _ae2f_SysThrdStckPtr_t)
 {
