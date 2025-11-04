@@ -10,6 +10,9 @@
 #include "./Inet.h"
 
 #if ae2f_Sys_WIN(!)0
+#include <windows.h>
+#include <winsock2.h>
+
 #define ae2f_SysWSock SOCKET
 #else
 #define ae2f_SysWSock int
