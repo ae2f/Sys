@@ -9,9 +9,7 @@
 
 #if ae2f_Sys_WIN(!)0
 
-#include <winsock2.h>
 #include <windows.h>
-
 
 #pragma comment(lib, "ws2_32")
 
