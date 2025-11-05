@@ -28,7 +28,10 @@
 #define __ae2f_SysThrdStckTopOper(prm_ptr, prm_sz)	((prm_ptr) + (prm_sz))
 #endif
 
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#endif
+
 #include <sys/mman.h>
 #include <sys/syscall.h>
 #include <unistd.h>

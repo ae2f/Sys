@@ -24,7 +24,7 @@ ae2f_MAC(unused_0, ) ae2f_SysFtxWait_imp__linux(
 		)
 {
 	(ret_err) = syscall(SYS_futex, prm_uaddr, FUTEX_WAIT, prm_val, pprm_time_opt, NULL, 0) == -1 ? 
-		ae2f_reinterpret_cast(ae2f_eSysFtxWait, (errno)) : 
+		ae2f_static_cast(ae2f_eSysFtxWait, (errno)) : 
 		ae2f_SysFtxWait_GOOD
 		;
 }
