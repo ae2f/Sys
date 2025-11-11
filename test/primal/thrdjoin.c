@@ -58,7 +58,7 @@ int main(void) {
 #endif
 
 	puts("Thread main has made a thread");
-	printf("ret_stat: %u\n", ret_stat);
+	printf("ret_stat: %u\n", ae2f_static_cast(unsigned int, ret_stat));
 
 
 	_ae2f_SysThrdJoin_imp(
@@ -69,7 +69,9 @@ int main(void) {
 
 	printf(
 			"Thread main joined %d with retval %d\n"
-			, (ret_thrd0).m_id, ret_rtn);
+			, ae2f_static_cast(int, (ret_thrd0).m_id)
+			, ae2f_static_cast(int, ret_rtn)
+			);
 
 	_ae2f_SysThrdJoin_imp(
 			ret_stat
@@ -78,8 +80,10 @@ int main(void) {
 			);
 
 	printf(
-			"Thread main joined %d with retval %d\n"
-			, (ret_thrd1).m_id, ret_rtn);
+			"Thread main joined %u with retval %d\n"
+			, ae2f_static_cast(unsigned int, (ret_thrd1).m_id)
+			, ae2f_static_cast(int, ret_rtn)
+			);
 
 
 
