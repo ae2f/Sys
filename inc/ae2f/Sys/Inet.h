@@ -66,7 +66,7 @@ typedef enum {
 	 * @see ae2f_SysInetMk
 	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
 	 * */
-	ae2f_SysInetMk_PTRINVAL	ae2f_Sys_WIN(= WSAEFAULT),
+	ae2f_SysInetMk_PTRINVAL	ae2f_Sys_WIN(= WSAEFAULT)
 
 
 } ae2f_eSysInetMk;
@@ -85,7 +85,7 @@ typedef enum {
 	 * @brief Blocked by Windows Sockets 1.1 operations.
 	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
 	 * */
-	ae2f_SysInetDel_BLKED		ae2f_Sys_WIN(= WSAEINPROGRESS),
+	ae2f_SysInetDel_BLKED		ae2f_Sys_WIN(= WSAEINPROGRESS)
 } ae2f_eSysInetDel;
 
 /**

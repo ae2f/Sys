@@ -63,7 +63,7 @@ typedef enum {
 
 	/** @brief Mutex is not owned by this thread */
 	ae2f_SysFtxWait_MTXNOWN
-		N_ae2f_Sys_WIN(= EPERM),
+		N_ae2f_Sys_WIN(= EPERM)
 } ae2f_eSysFtxWait;
 
 /** 
@@ -98,7 +98,7 @@ typedef enum {
 
 	/** @brief Mutex is not owned by this thread */
 	ae2f_SysFtxWake_MTXNOWN
-		N_ae2f_Sys_WIN(= EPERM),
+		N_ae2f_Sys_WIN(= EPERM)
 	
 } ae2f_eSysFtxWake;
 

@@ -41,7 +41,7 @@ typedef enum ae2f_eSysThrd_t {
 	ae2f_eSysThrdTmOut,
 
 	ae2f_eSysThrdBusy,
-	ae2f_eSysThrdErr,
+	ae2f_eSysThrdErr
 } ae2f_eSysThrd_t;
 
 /** 
