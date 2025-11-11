@@ -32,13 +32,19 @@ struct timespec;
 
 #include <errno.h>
 
+#undef ae2f_prmvoid
+
+#if __ae2f_MACRO_GENERATED
+#define ae2f_prmvoid
+#else
+#define ae2f_prmvoid void
+#endif
+
 ae2f_MAC() __linux_ae2f_SysThrdMk_imp_call(
 		ae2f_eSysThrd_t			ret_stat,
 		ae2f_SysThrdID_t		ret_tid,
-		ae2f_SysThrdFn_t* const		prm_func,
 		_ae2f_SysThrdRunnerPrm_t* const prm_stck,
-		void* const			prm_stcktop,
-		size_t				prm_stcksz
+		void* const			prm_stcktop
 		)
 {
 	(ret_tid) = clone(
@@ -78,9 +84,9 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 {
 	(ret_thrd).m_stck.m_void = mmap(
 			NULL, ((ret_thrd).m_stcksz = (
-					(prm_stcksz) 
-					+ sizeof(_ae2f_SysThrdRunnerPrm_t)
-					+ sizeof(void*)
+					(prm_stcksz)
+					+ ae2f_static_cast(size_t, sizeof(_ae2f_SysThrdRunnerPrm_t))
+					+ ae2f_static_cast(size_t, sizeof(void*))
 					)
 			      )
 			, PROT_READ | PROT_WRITE
@@ -99,10 +105,8 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 
 		___linux_ae2f_SysThrdMk_imp_call(
 				ret_stat, (ret_thrd).m_id
-				, prm_func
 				, (ret_thrd).m_stck.m_prm
 				, __ae2f_SysThrdStckTopOper(((ret_thrd).m_stck.m_char), (prm_stcksz))
-				, prm_stcksz
 				);
 
 		if(ret_stat != ae2f_eSysThrdSuccess)
@@ -123,7 +127,7 @@ ae2f_MAC() ae2f_SysThrdJoin_imp(
 		const ae2f_SysThrd	prm_thrd
 		)
 {
-	ae2f_eSysFtxWait v_res;
+	ae2f_eSysFtxWait v_res = ae2f_SysFtxWait_GOOD;
 
 	unless((prm_thrd).m_stck.m_void) {
 		(ret_stat) = ae2f_eSysThrdErr;
@@ -160,7 +164,7 @@ ae2f_MAC() ae2f_SysThrdYield_imp()
 }
 
 ae2f_MAC() ae2f_SysThrdSleep_imp(
-		int ret_stat
+		long ret_stat
 		, const struct timespec * const prm_req
 		, struct timespec * const prm_rem
 		)

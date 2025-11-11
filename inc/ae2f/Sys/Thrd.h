@@ -49,7 +49,7 @@ typedef enum ae2f_eSysThrd_t {
  * @warning
  * This structure's size could vary for implementation.
  * */
-ae2f_structdef(struct, ae2f_SysThrd)
+typedef struct 
 {
 	/** thread id */
 	ae2f_SysThrdID_t	m_id;
@@ -59,7 +59,7 @@ ae2f_structdef(struct, ae2f_SysThrd)
 
 	/** stack size (linux only) */
 	ae2f_Sys__linux(size_t	m_stcksz;)
-};
+} ae2f_SysThrd;
 
 #endif
 

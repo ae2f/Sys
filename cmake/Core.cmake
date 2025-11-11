@@ -92,6 +92,7 @@ function(ae2f_CoreLibTentConfigCustom prm_TarName prm_TarPreFix prm_includeDir p
 	target_include_directories(
 		${prm_namespace}-${prm_TarName} INTERFACE
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${prm_includeDir}/>  
+		$<INSTALL_INTERFACE:${prm_includeDir}/${prm_namespace}/>
 	)
 
 	# Install Settings

@@ -35,7 +35,10 @@ ae2f_MAC() ae2f_SysFtxWake__linux(
 		const int		prm_numthrd
 		)
 {
-	(ret_err) = syscall(SYS_futex, prm_uaddr, FUTEX_WAKE, prm_numthrd, NULL, NULL, 0);
+	(ret_err) = ae2f_static_cast(
+			ae2f_eSysFtxWake
+			, syscall(SYS_futex, prm_uaddr, FUTEX_WAKE, prm_numthrd, NULL, NULL, 0)
+			);
 }
 
 ae2f_MAC() ae2f_SysFtxWakeOne__linux(ae2f_eSysFtxWake ret_err, ae2f_SysFtxEl_t* const prm_uaddr) {

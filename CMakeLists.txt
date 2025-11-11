@@ -6,7 +6,7 @@ option(ae2f_DEVEL ""	ON)
 enable_testing()
 
 cmake_minimum_required(VERSION 3.10)
-project(Sys VERSION 0.0.0)
+project(Sys VERSION 0.0.0 LANGUAGES C CXX)
 
 include(cmake/Core.cmake)
 
@@ -23,13 +23,13 @@ endif()
 
 if(NOT TARGET ae2f::Sys)
 	ae2f_CoreLibFetchX(ae2f	c89atomic master)
-	file(GLOB_RECURSE sys-inc inc/ae2f/Sys/*)
+	file(GLOB_RECURSE sys-inc ${PROJECT_SOURCE_DIR}/inc/)
 
 	ae2f_Macro_init(1 30 30)
 	ae2f_Macro_Lib_V(
 		ae2f Sys INTERFACE
 		${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
-		${PROJECT_SOURCE_DIR}/src/sys "*.def.c*" 
+		${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
 		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
 		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
 		inc
@@ -48,6 +48,6 @@ if(NOT TARGET ae2f::Sys)
 	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
 	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
 
-	ae2f_CoreTestTent(${ae2f__Sys__TENT} test/primal)
-	ae2f_CoreTestTent(${ae2f__Sys__TENT} test/enums)
+	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/primal)
+	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/enums)
 endif()

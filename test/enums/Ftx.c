@@ -4,8 +4,9 @@
  * */
 
 #include <ae2f/Sys/Ftx.h>
+#include <assert.h>
 
-int main() {
+int main(void) {
 	{
 		ae2f_eSysFtxWait wait = ae2f_SysFtxWait_GOOD;
 		switch(wait) {
@@ -21,6 +22,9 @@ int main() {
 			case ae2f_SysFtxWait_MTXOWNDEAD:
 			case ae2f_SysFtxWait_MTXNOWN:
 				break;
+
+			default:
+				assert(0 && "");
 		}
 	}
 
@@ -36,6 +40,8 @@ int main() {
 			case ae2f_SysFtxWake_MTXOWNDEAD:
 			case ae2f_SysFtxWake_MTXNCOVERABLE:
 				break;
+			default:
+				assert(0 && "");
 		}
 	}
 

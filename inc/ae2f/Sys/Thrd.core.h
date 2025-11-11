@@ -5,7 +5,6 @@
 #ifndef	ae2f_Sys_Thrd_core_h
 #define	ae2f_Sys_Thrd_core_h
 
-#include <ae2f/Cast.h>
 #include <ae2f/Keys.h>
 
 #include "../Sys.h"
@@ -54,21 +53,21 @@ typedef struct
 	 * This member must not be changed by multiple threads
 	 * */
 	ae2f_SysFtxEl_t		m_done;
-	int_least64_t	m_ftxret;
+	int_least64_t		m_ftxret;
 
 	int		(*m_fn)(void*);
 	void*		m_arg;
 	size_t		m_stcksz;
 } _ae2f_SysThrdRunnerPrm_t;
 
-ae2f_structdef(union, _ae2f_SysThrdStckPtr_t)
+typedef union
 {
 	void* ae2f_restrict				m_void;
 	char* ae2f_restrict				m_char;
-	_ae2f_SysThrdRunnerPrm_t* ae2f_restrict	m_prm;
-};
+	_ae2f_SysThrdRunnerPrm_t* ae2f_restrict		m_prm;
+} _ae2f_SysThrdStckPtr_t;
 
-static void	_ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {
+static _ae2f_SysThrdRes_t _ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {
 
 	if(prm_stck) {
 		/** child section */
@@ -81,10 +80,10 @@ static void	_ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck) {
 				, (&(prm_stck)->m_done)
 				);
 
-		syscall(SYS_exit, 0);
+		return 0;
 	}
 
-	syscall(SYS_exit, -1);
+	return -1;
 }
 
 #else

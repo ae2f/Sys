@@ -6,9 +6,13 @@
 
 int A = 0;
 
+ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t);
+
 ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
+	(void)prm; /** ignore */
+
 	struct timespec	req, rem;
-	register int		done;
+	register long		done;
 
 	req.tv_sec = 0;
 	req.tv_nsec = 4000;
@@ -16,13 +20,15 @@ ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
 	printf("Thread child is starting\n");
 
 	_ae2f_SysThrdSleep_imp(done, &req, &rem);
+
+	(void)done;
 	A = 1;
 
 	printf("Thread child is ending\n");
 	return ae2f_reinterpret_cast(ae2f_SysThrdRes_t, 3);
 }
 
-int main() {
+int main(void) {
 	register ae2f_eSysThrd_t	ret_stat = 0;
 	ae2f_SysThrd		ret_thrd0, ret_thrd1;
 
@@ -52,7 +58,7 @@ int main() {
 #endif
 
 	puts("Thread main has made a thread");
-	printf("ret_stat: %d\n", ret_stat);
+	printf("ret_stat: %u\n", ret_stat);
 
 
 	_ae2f_SysThrdJoin_imp(

@@ -1,6 +1,7 @@
 #ifndef ae2f_Sys_Ftx_POSIX_auto_h
 
-#if __ae2f_MACRO_GENERATED
+#include <ae2f/Keys.h>
+#if ae2f_conddef(__ae2f_MACRO_GENERATED)
 #else
 #include <ae2f/Sys/Ftx.h>
 #endif
