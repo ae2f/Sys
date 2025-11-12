@@ -6,8 +6,8 @@
 #define ae2f_Sys_h
 
 
-#define ae2f_SysHosted(...) __VA_ARGS__
-#define ae2f_SysNHosted(...)
+#define ae2f_SysHosted(a) a
+#define ae2f_SysNHosted(a)
 
 #define ae2f_Sys_WIN64		ae2f_SysNHosted
 #define ae2f_Sys_WIN32		ae2f_SysNHosted
