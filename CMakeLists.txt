@@ -19,6 +19,10 @@ if(NOT TARGET ae2f::SysCore)
 		SysCore INTERFACE inc ae2f 
 		${PROJECT_SOURCE_DIR}/Config/Sys-Base.cmake.in
 		)
+
+	if(WIN32)
+		target_link_libraries(${ae2f__SysCore__TENT} ws2_32)
+	endif()
 endif()
 
 if(NOT TARGET ae2f::Sys)
@@ -45,6 +49,7 @@ if(NOT TARGET ae2f::Sys)
 		)
 
 	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Core)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::SysCore)
 	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
 	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
 
