@@ -21,7 +21,7 @@ if(NOT TARGET ae2f::SysCore)
 		)
 
 	if(WIN32)
-		target_link_libraries(${ae2f__SysCore__TENT} ws2_32)
+		target_link_libraries(${ae2f__SysCore__TENT} INTERFACE ws2_32)
 	endif()
 endif()
 
