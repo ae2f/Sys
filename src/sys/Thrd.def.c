@@ -158,7 +158,7 @@ ae2f_MAC() ae2f_SysThrdJoin_imp(
 	}
 }
 
-ae2f_MAC() ae2f_SysThrdYield_imp()
+ae2f_MAC() ae2f_SysThrdYield_imp(void)
 {
 	syscall(SYS_sched_yield);
 }
