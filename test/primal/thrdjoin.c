@@ -35,6 +35,11 @@ int main(void) {
 	ae2f_SysThrd		ret_thrd0, ret_thrd1;
 
 	ae2f_SysThrdRes_t	ret_rtn;
+	register union {
+		void*			m_v;
+		ae2f_SysThrdID_t	m_id;
+	} id_for_printf;
+
 
 	ret_rtn = 0;
 
@@ -69,9 +74,11 @@ int main(void) {
 			, ret_thrd0
 			);
 
+	id_for_printf.m_id = (ret_thrd0).m_id;
+
 	printf(
-			"Thread main joined %lx with retval %d\n"
-			, ae2f_static_cast(uintptr_t, (ret_thrd0).m_id)
+			"Thread main joined %p with retval %d\n"
+			, id_for_printf.m_v
 			, ae2f_static_cast(int, ret_rtn)
 			);
 
@@ -81,9 +88,12 @@ int main(void) {
 			, ret_thrd1
 			);
 
+
+	id_for_printf.m_id = (ret_thrd1).m_id;
+
 	printf(
-			"Thread main joined %lx with retval %d\n"
-			, ae2f_static_cast(uintptr_t, (ret_thrd1).m_id)
+			"Thread main joined %p with retval %d\n"
+			, id_for_printf.m_v
 			, ae2f_static_cast(int, ret_rtn)
 			);
 
