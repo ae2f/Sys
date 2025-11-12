@@ -1,4 +1,5 @@
 #include <ae2f/Sys/Thrd.h>
+#include <ae2f/Cast.h>
 #include <stdio.h>
 #include <time.h>
 #include <assert.h>
