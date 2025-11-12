@@ -9,10 +9,11 @@ int A = 0;
 ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t);
 
 ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
-	(void)prm; /** ignore */
-
 	struct timespec	req, rem;
 	register long		done;
+
+
+	(void)prm; /** ignore */
 
 	req.tv_sec = 0;
 	req.tv_nsec = 4000;
