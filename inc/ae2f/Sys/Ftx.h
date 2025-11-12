@@ -9,11 +9,11 @@
 #include "../Sys.h"
 
 #if (ae2f_Sys_WIN(!)0 || ae2f_Sys__linux(!)0)
-#define N_ae2f_SysFtx_POSIX(...)	__VA_ARGS__
-#define ae2f_SysFtx_POSIX(...)
+#define N_ae2f_SysFtx_POSIX(a)	a
+#define ae2f_SysFtx_POSIX(a)
 #else
-#define N_ae2f_SysFtx_POSIX(...)
-#define ae2f_SysFtx_POSIX(...)		__VA_ARGS__
+#define N_ae2f_SysFtx_POSIX(a)
+#define ae2f_SysFtx_POSIX(a)	a	
 #endif
 
 #include "./Ftx.core.h"
