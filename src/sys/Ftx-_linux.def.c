@@ -1,3 +1,4 @@
+
 /**
  * @file Futex-_linux.auto.h
  * */
@@ -5,9 +6,9 @@
 #include <ae2f/Sys/Ftx-_linux.h>
 #define ae2f_Sys_Futex_linux__auto_h
 
-#include <ae2f/Cast.h>
-#include <ae2f/Macro.h>
 
+#include <ae2f/Macro.h>
+#include <ae2f/Cast.h>
 #include <errno.h>
 
 #if ae2f_Sys__linux(!)0
@@ -16,7 +17,7 @@
  * @brief
  * @retval ae2f_eSysFtxWait
  * */
-ae2f_MAC(unused_0, ) ae2f_SysFtxWait_imp__linux(
+ae2f_MAC((unused_0, )) ae2f_SysFtxWait_imp__linux(
 		ae2f_eSysFtxWait		ret_err,
 		ae2f_SysFtxEl_t* const		prm_uaddr,
 		const int			prm_val,

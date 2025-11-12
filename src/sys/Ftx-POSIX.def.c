@@ -1,7 +1,8 @@
 #ifndef ae2f_Sys_Ftx_POSIX_auto_h
 
 #include <ae2f/Keys.h>
-#if ae2f_conddef(__ae2f_MACRO_GENERATED)
+#include <ae2f/Macro.h>
+#if __ae2f_MACRO_GENERATED
 #else
 #include <ae2f/Sys/Ftx.h>
 #endif
@@ -11,12 +12,11 @@
 
 #if __ae2f_MACRO_GENERATED
 #else
-#include <ae2f/Macro.h>
 ae2f_SysFtxLibDeclare_POSIX(static);
 ae2f_SysFtxLibDefine_POSIX(static);
 #endif
 
-ae2f_MAC(UNUSED, ) ae2f_SysFtxWait_imp_POSIX(
+ae2f_MAC((UNUSED, )) ae2f_SysFtxWait_imp_POSIX(
 		ae2f_eSysFtxWait	ret_err,
 		ae2f_SysFtxEl_t* const	prm_uaddr,
 		const int		prm_val,

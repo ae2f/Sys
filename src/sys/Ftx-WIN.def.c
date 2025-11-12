@@ -1,3 +1,6 @@
+
+#include <ae2f/Macro.h>
+
 /**
  * @file Futex.auto.h
  * */
@@ -5,7 +8,6 @@
 #include <ae2f/Sys/Ftx.h>
 #define ae2f_Sys_Futex_auto_h
 
-#include <ae2f/Macro.h>
 
 #if ae2f_Sys_WIN(!)0
 
