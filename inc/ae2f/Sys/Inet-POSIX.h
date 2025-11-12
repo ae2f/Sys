@@ -32,9 +32,12 @@ typedef ae2f_Sys_unused_t	ae2f_SysInetMkData_POSIX;
  * */
 #define ae2f_SysInetMk_POSIX(a, b)	ae2f_SysInetMk_GOOD
 
-/// @brief
-/// Dummy library release function.
+/**
+ * @brief
+ * Dummy library release function.
+ * */
 #define ae2f_SysInetDel_POSIX()		ae2f_SysInetDel_GOOD
+
 
 /** 
  * @brief since for windowsm for closing socket, closesocket is recommended. 
