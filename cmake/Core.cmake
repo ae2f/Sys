@@ -16,46 +16,6 @@ else()
 	set(ae2f_LIBPREFIX STATIC CACHE STRING "STATIC")
 endif()
 
-# @namespace ___DOC_CMAKE
-# @brief
-# Note they functions defined on CMake, not C/C++.
-# 
-# @brief
-# Iterates a directory `prm_TestSourcesDir` and 
-# Make a test case for every source.
-# 
-# @param prm_LibName
-# Base Library name
-# 
-# @param prm_TestSourcesDir
-# A directory where the stand-alone test codes locate. \n
-# Every sources under that directory must be stand-alone, which means it must not depends on another memory, function, etc.
-# 
-# @param ...
-# Additional Libraries if you want
-# 
-# @see ___DOC_CMAKE::ae2f_TEST
-function(ae2f_CoreTestTent prm_LibName prm_TestSourcesDir)
-	if(ae2f_TEST)
-		if(ae2f_CXX)
-			file(GLOB_RECURSE files "${prm_TestSourcesDir}/*")
-		else()
-			file(GLOB_RECURSE files "${prm_TestSourcesDir}/*.c")
-		endif()
-		list(LENGTH files list_length)
-
-		math(EXPR adjusted_length "${list_length} - 1")
-
-		foreach(i RANGE 0 ${adjusted_length})
-			list(GET files ${i} item)
-			get_filename_component(__NAME ${item} NAME)
-			add_executable("${prm_LibName}-Test-${__NAME}" ${item})
-			target_link_libraries("${prm_LibName}-Test-${__NAME}" ${ARGN} ${prm_LibName})
-			add_test(NAME "${prm_LibName}-Test-${__NAME}" COMMAND "${prm_LibName}-Test-${__NAME}")
-		endforeach()
-	endif()
-endfunction()
-
 # @brief
 # Makes a Library installable. \n
 # Configuration file could be selected here
