@@ -22,10 +22,10 @@ if(NOT EXISTS ${ae2f_CoreScript_Wh})
     ${ae2f_CoreScript_Wh}
     )
 
+endif()
+
 # add subdirectory
 add_subdirectory(${ae2f_CoreScript_Wh})
-
-endif()
 
 # FIXME
 if(NOT TARGET ae2f::SysCore)
