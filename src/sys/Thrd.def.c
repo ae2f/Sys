@@ -21,10 +21,6 @@
 #define ae2f_Sys_Thrd_auto_h
 
 
-#if __ae2f_MACRO_GENERATED
-#else
-#include <ae2f/Macro.h>
-#endif
 
 struct timespec;
 
@@ -39,6 +35,9 @@ struct timespec;
 #else
 #define ae2f_prmvoid void
 #endif
+
+
+#include <ae2f/Macro.h>
 
 ae2f_MAC() __linux_ae2f_SysThrdMk_imp_call(
 		ae2f_eSysThrd_t			ret_stat,
@@ -83,7 +82,7 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 		)
 {
 	(ret_thrd).m_stck.m_void = mmap(
-			NULL, ((ret_thrd).m_stcksz = (
+			ae2f_NIL, ((ret_thrd).m_stcksz = (
 					(prm_stcksz)
 					+ ae2f_static_cast(size_t, sizeof(_ae2f_SysThrdRunnerPrm_t))
 					+ ae2f_static_cast(size_t, sizeof(void*))
@@ -96,7 +95,8 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 
 	if(MAP_FAILED == (ret_thrd).m_stck.m_void || !(ret_thrd).m_stck.m_void) {
 		(ret_stat) = ae2f_eSysThrdMemOut;
-		(ret_thrd).m_stck.m_void = NULL;
+		(ret_thrd).m_stck.m_void = ae2f_NIL;
+		(ret_thrd).m_id = -1;
 	}
 	else {
 		(ret_thrd).m_stck.m_prm->m_arg = (prm_arg);
@@ -115,7 +115,7 @@ ae2f_MAC() ae2f_SysThrdMk_imp(
 					(ret_thrd).m_stck.m_void
 					, (ret_thrd).m_stcksz
 			      );
-			(ret_thrd).m_stck.m_void = NULL;
+			(ret_thrd).m_stck.m_void = ae2f_NIL;
 		}
 	}
 }
