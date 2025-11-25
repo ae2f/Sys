@@ -11,24 +11,19 @@ project(Sys VERSION 0.0.0 LANGUAGES C CXX)
 # Set this source directory as the tree root for project.
 set(ae2f_ProjRoot ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Tree root for project")
 set(ae2f_submod  .submod CACHE STRING "Relative path to submodule (subdirectory)")
+set(ae2f_CoreScript_Wh ${ae2f_ProjRoot}/${ae2f_submod}/ae2f/CoreScript)
 
-# guide for ae2f_CoreScript_Wh
-if(NOT ae2f_CoreScript_Wh)
+# Execute git to fetch CoreScript when repository does not exist
+if(NOT EXISTS ${ae2f_CoreScript_Wh})
+	execute_process(
+		COMMAND git clone https://codeberg.org/ae2f/CoreScript
+		${ae2f_CoreScript_Wh}
+		)
+endif()
 
-	# Directory to inject corescript
-	set(ae2f_CoreScript_Wh ./.cmake)
-
-	# Execute git to fetch CoreScript when repository does not exist
-	if(NOT EXISTS ${ae2f_CoreScript_Wh})
-		execute_process(
-			COMMAND git clone https://codeberg.org/ae2f/CoreScript
-			${ae2f_CoreScript_Wh}
-			)
-	endif()
-
-	# add subdirectory
-	add_subdirectory(${ae2f_CoreScript_Wh})
-
+# add subdirectory
+if(NOT TARGET ae2f::CoreScript)
+	add_subdirectory(${ae2f_CoreScript_Wh} ${ae2f_submod}/ae2f/CoreScript)
 endif()
 
 # FIXME
