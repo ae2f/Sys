@@ -3,10 +3,13 @@
  * @file Futex-_linux.auto.h
  * */
 #ifndef ae2f_Sys_Futex_linux__auto_h
+
+#define	_ae2f_SysFtxEl__linux	int
 #include <ae2f/Sys/Ftx-_linux.h>
 #define ae2f_Sys_Futex_linux__auto_h
 
 
+#include <ae2f/Sys/Ftx.core.h>
 #include <ae2f/Macro.h>
 #include <ae2f/Cast.h>
 #include <errno.h>

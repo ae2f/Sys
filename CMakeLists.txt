@@ -1,7 +1,13 @@
 option(ae2f_TEST "" ON)
-option(ae2f_MAC_BUILD "" ON)
-option(ae2f_IS_SHARED "" ON)
-option(ae2f_DEVEL ""	ON)
+option(ae2f_MAC_BUILD "" 	ON)
+option(ae2f_IS_SHARED "" 	ON)
+option(ae2f_Sys_DEVEL ""	OFF)
+
+if(ae2f_Sys_DEVEL)
+	set(HELPER_LINK)
+else()
+	set(HELPER_LINK INTERFACE)
+endif()
 
 enable_testing()
 
@@ -44,17 +50,30 @@ endif()
 if(NOT TARGET ae2f::Sys)
 	ae2f_CoreLibFetchX(ae2f	c89atomic master)
 	file(GLOB_RECURSE sys-inc ${PROJECT_SOURCE_DIR}/inc/)
+	file(GLOB_RECURSE sys-src ${PROJECT_SOURCE_DIR}/src/*)
 
 	ae2f_Macro_init(1 30 30)
-	ae2f_Macro_Lib_V(
-		ae2f Sys INTERFACE
-		${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
-		${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
-		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
-		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
-		inc
-		inc/ae2f/Sys.h ${sys-inc}
-		)
+	if(ae2f_Sys_DEVEL)
+		ae2f_Macro_Lib_V(
+			ae2f Sys STATIC
+			${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
+			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
+			${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
+			${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
+			inc
+			inc/ae2f/Sys.h ${sys-inc} ${sys-src}
+			)
+	else()
+		ae2f_Macro_Lib_V(
+			ae2f Sys INTERFACE 
+			${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
+			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
+			${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
+			${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
+			inc
+			inc/ae2f/Sys.h ${sys-inc}
+			)
+	endif()
 
 	install(
 		TARGETS c89atomic c89atomic_common
@@ -64,10 +83,10 @@ if(NOT TARGET ae2f::Sys)
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Core)
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::SysCore)
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
+	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} ae2f::Core)
+	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} ae2f::SysCore)
+	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} ae2f::Preproc)
+	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} c89atomic)
 
 	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/primal)
 	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/enums)
