@@ -8,6 +8,10 @@
 #include <ae2f/Sys/Ftx.h>
 #define ae2f_Sys_Futex_auto_h
 
+/** synchronization link */
+/** #pragma comment(lib, "synchronization") */
+
+#define	_ae2f_SysFtxEl_WIN	volatile LONG
 
 #if ae2f_Sys_WIN(!)0
 
