@@ -14,6 +14,9 @@
 #define ae2f_SysFtxLibDefine_WIN(tprm_export)
 #define ae2f_SysFtxLibDeclare_WIN(tprm_import)
 
+
+#define	_ae2f_SysFtxEl_WIN	volatile LONG
+
 #endif
 
 #endif
