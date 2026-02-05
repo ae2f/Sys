@@ -3,8 +3,8 @@ option(ae2f_MAC_BUILD "" 	ON)
 option(ae2f_IS_SHARED "" 	ON)
 option(ae2f_Sys_DEVEL ""	OFF)
 
-if(ae2f_Sys_DEVEL)
-	set(HELPER_LINK)
+if(${ae2f_Sys_DEVEL})
+	set(HELPER_LINK PUBLIC)
 else()
 	set(HELPER_LINK INTERFACE)
 endif()
@@ -53,10 +53,11 @@ if(NOT TARGET ae2f::Sys)
 	file(GLOB_RECURSE sys-src ${PROJECT_SOURCE_DIR}/src/*)
 
 	ae2f_Macro_init(1 30 30)
-	if(ae2f_Sys_DEVEL)
+	if(${ae2f_Sys_DEVEL})
+		message(STATUS "ae2f::Sys Developer mode")
 		ae2f_Macro_Lib_V(
 			ae2f Sys STATIC
-			${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
+			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
 			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
 			${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
 			${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
@@ -77,7 +78,7 @@ if(NOT TARGET ae2f::Sys)
 
 	install(
 		TARGETS c89atomic c89atomic_common
-		EXPORT ${ae2f__Sys__TENT}Targets
+		EXPORT SysTargets
 		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}

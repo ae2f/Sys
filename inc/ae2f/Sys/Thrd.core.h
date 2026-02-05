@@ -6,16 +6,18 @@
 #define	ae2f_Sys_Thrd_core_h
 
 #include <ae2f/Keys.h>
+#include <ae2f/cc.h>
 
 #include "../Sys.h"
+
 
 #if	ae2f_Sys_WIN(!)0
 #include <windows.h>
 #include <time.h>
 
-#define _ae2f_SysThrdRes_t	DWORD /* WINAPI */
-#define _ae2f_SysThrdPrm_t	/* __drv_aliasesMem */ LPVOID
-#define _ae2f_SysThrdID_t	HANDLE
+typedef	DWORD	_ae2f_SysThrdRes_t;
+typedef LPVOID	_ae2f_SysThrdPrm_t;
+typedef HANDLE	_ae2f_SysThrdID_t;
 
 #elif	ae2f_Sys__linux(!)0
 
@@ -41,9 +43,10 @@
 #include "./Ftx.h"
 #include <ae2f/c90/StdInt.h>
 
-#define	_ae2f_SysThrdRes_t	int
-#define _ae2f_SysThrdPrm_t	void*
-#define _ae2f_SysThrdID_t	int
+typedef int	_ae2f_SysThrdRes_t;
+typedef void*	_ae2f_SysThrdPrm_t;
+typedef int	_ae2f_SysThrdID_t;
+
 
 typedef struct 
 {
@@ -91,9 +94,10 @@ static _ae2f_SysThrdRes_t _ae2f_SysThrdRunner(_ae2f_SysThrdRunnerPrm_t* prm_stck
 #include <errno.h>
 #include <sched.h>
 
-#define _ae2f_SysThrdRes_t	void*
-#define _ae2f_SysThrdPrm_t	void*
-#define _ae2f_SysThrdID_t	pthread_t
+typedef	void*		_ae2f_SysThrdRes_t;
+typedef	void*		_ae2f_SysThrdPrm_t;
+typedef pthread_t	_ae2f_SysThrdID_t;
+
 #endif
 
 #endif
