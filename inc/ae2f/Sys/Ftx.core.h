@@ -2,104 +2,82 @@
  * @file Ftx.core.h
  * */
 
-#ifndef ae2f_Futex_core_h
-#define ae2f_Futex_core_h
+#ifndef ae2fsys_ftx_core_h
+#define ae2fsys_ftx_core_h
 
-#include <time.h>
-
-#include "./Ftx-WIN.h"
-#include "./Ftx-_linux.h"
-#include "./Ftx-POSIX.h"
-
+#include "../Sys.h"
 
 /**
  * @enum ae2f_eSysFtxWait
  * @brief Guaranteed not to be duplicated.
  * @see _ae2f_SysFtxWait
  * */
-typedef enum {
+enum AE2FSYS_FTXWAIT_ {
 	/** @brief Succesful */
-	ae2f_SysFtxWait_GOOD = 0,
+	AE2FSYS_FTXWAIT_GOOD,
+
+	AE2FSYS_FTXWAIT_UNKNOWN,
 
 	/** @brief timeout */
-	ae2f_SysFtxWait_TMOUT 
-		ae2f_Sys_WIN(= ERROR_TIMEOUT)
-		ae2f_Sys__linux(= ETIMEDOUT)
-		ae2f_SysFtx_POSIX(= ETIMEDOUT)
-		,
+	AE2FSYS_FTXWAIT_TMOUT,
 
 	/** @brief Invalid pointer to ae2f_SysFtxEl_t. */
-	ae2f_SysFtxWait_PTRINVAL 
-		N_ae2f_Sys_WIN(=EFAULT),
+	AE2FSYS_FTXWAIT_PTRINVAL,
 
 	/** @brief Invalid arguments (or not initialised) */
-	ae2f_SysFtxWait_INVAL 
-		ae2f_Sys__linux(=EINVAL) 
-		ae2f_SysFtx_POSIX(=EINVAL),
+	AE2FSYS_FTXWAIT_INVAL,
 
 	/** @brief Value expected did not match */
-	ae2f_SysFtxWait_MISMATCH
-		ae2f_Sys__linux(= EAGAIN),
+	AE2FSYS_FTXWAIT_MISMATCH,
 
 	/** @brief Interrupted by a user */
-	ae2f_SysFtxWait_INTERRUPTED
-		ae2f_Sys__linux(= EINTR),
+	AE2FSYS_FTXWAIT_INTERRUPTED,
 
 	/** @brief Target system does not support this */
-	ae2f_SysFtxWait_NO_IMP
-		ae2f_Sys__linux(= ENOSYS),
+	AE2FSYS_FTXWAIT_NO_IMP,
 
 	/** @brief Mutex is uncoverable */
-	ae2f_SysFtxWait_MTXNCOVERABLE 
-		ae2f_SysFtx_POSIX(= ENOTRECOVERABLE),
+	AE2FSYS_FTXWAIT_MTXNCOVERABLE,
 
 	/** @brief Mutex's owner is dead */
-	ae2f_SysFtxWait_MTXOWNDEAD
-		ae2f_SysFtx_POSIX(= EOWNERDEAD),
+	AE2FSYS_FTXWAIT_MTXOWNDEAD,
 
 	/** @brief Current system already has mutex. */
-	ae2f_SysFtxWait_MTXBLK
-		ae2f_SysFtx_POSIX(= EDEADLK),
+	AE2FSYS_FTXWAIT_MTXBLK,
 
 	/** @brief Mutex is not owned by this thread */
-	ae2f_SysFtxWait_MTXNOWN
-		N_ae2f_Sys_WIN(= EPERM)
-} ae2f_eSysFtxWait;
+	AE2FSYS_FTXWAIT_MTXNOWN
+};
 
 /** 
  * @enum ae2f_eSysFtxWake 
  * */
-typedef enum {
-	ae2f_SysFtxWake_GOOD = 0,
+enum AE2FSYS_FTXWAKE_ {
+	AE2FSYS_FTXWAKE_GOOD,
+
+	AE2FSYS_FTXWAKE_UNKNOWN,
 
 	/** @brief Invalid pointer to uaddr */
-	ae2f_SysFtxWake_PTRINVAL 
-		N_ae2f_Sys_WIN(= EFAULT),
+	AE2FSYS_FTXWAKE_PTRINVAL,
 
 	/** @brief Not initialised */
-	ae2f_SysFtxWake_INVAL 
-		ae2f_Sys__linux(= EINVAL),
+	AE2FSYS_FTXWAKE_INVAL,
 
 	/** @brief Implementation is not included on your system */
-	ae2f_SysFtxWake_NO_IMP
-		ae2f_Sys__linux(= ENOSYS),
+	AE2FSYS_FTXWAKE_NO_IMP,
 
 	/** @brief Mutex is uncoverable */
-	ae2f_SysFtxWake_MTXNCOVERABLE 
-		ae2f_SysFtx_POSIX(= ENOTRECOVERABLE),
+	AE2FSYS_FTXWAKE_MTXNCOVERABLE,
 
 	/** @brief Mutex's owner is dead */
-	ae2f_SysFtxWake_MTXOWNDEAD
-		ae2f_SysFtx_POSIX(= EOWNERDEAD),
+	AE2FSYS_FTXWAKE_MTXOWNDEAD,
 
 	/** @brief Current system already has mutex. */
-	ae2f_SysFtxWake_MTXBLK
-		ae2f_SysFtx_POSIX(= EDEADLK),
+	AE2FSYS_FTXWAKE_MTXBLK,
 
 	/** @brief Mutex is not owned by this thread */
-	ae2f_SysFtxWake_MTXNOWN
-		N_ae2f_Sys_WIN(= EPERM)
+	AE2FSYS_FTXWAKE_MTXNOWN
 	
-} ae2f_eSysFtxWake;
+};
 
 #endif

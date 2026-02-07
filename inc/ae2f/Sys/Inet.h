@@ -1,7 +1,7 @@
 /**
  * @file Inet.h
  * @author dalmurii
- * @brief 
+ * @brief startup code for inet
  * @copyright Copyright (c) 2025
  * 
  */
@@ -9,135 +9,63 @@
 #ifndef ae2f_Inet_h
 #define ae2f_Inet_h
 
-#include "../Sys.h"
-#include "./WSock.h"
-
-#include "./Inet-WIN.h"
-#include "./Inet-POSIX.h"
-
-#define _ae2f_SysInetMkData				\
-	N_ae2f_Sys_WIN(ae2f_SysInetMkData_POSIX)	\
-	ae2f_Sys_WIN(ae2f_SysInetMkData_WIN)
+#include "./Sock.h"
+#include "./inet/POSIX.auto.h"
+#include "./inet/WIN.auto.h"
 
 /**
- * @typedef ae2f_SysInetMkData_t
- * @brief Type for `ae2f_SysInetMk` as library constructor
- * @see ae2f_SysInetMk
- * @see ae2f_SysInetMkData_DEC
+ * @typedef	ae2fsys_mkinet_t
+ * @brief
+ * 	Type for `ae2f_SysInetMk` as library constructor
+ *
+ * @see ae2fsys_initinet_imp
+ * @see ae2fsys_declmkinet
  * */
-typedef _ae2f_SysInetMkData ae2f_SysInetMkData;
+#define	ae2fsys_mkinet_t	ae2fsys_mkinet_t
 
 /**
- * @enum ae2f_eSysInetMk_WIN
+ * @def		ae2fsys_declmkinet
+ * @tparam prm_vname
+ * 	A name of the variable declared.
+ *
+ * @see ae2fsys_initinet_imp
  * */
-typedef enum {
-	/**
-	 * @brief Operation succeed
-	 * */
-	ae2f_SysInetMk_GOOD = 0,
-
-	/**
-	 * @brief System is not ready.
-	 * @see https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2 
-	 * */
-	ae2f_SysInetMk_NREADY	ae2f_Sys_WIN(= WSASYSNOTREADY),
-
-	/**
-	 * @brief System does not support this version.	<ae2f_SysInetMk::prm_VerReq>
-	 * @see ae2f_SysInetMk
-	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
-	 * */
-	ae2f_SysInetMk_NSUPPORT	ae2f_Sys_WIN(= WSAVERNOTSUPPORTED),
-
-	/**
-	 * @brief Blocked by Windows Sockets 1.1 operations.
-	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
-	 * */
-	ae2f_SysInetMk_BLKED	ae2f_Sys_WIN(= WSAEINPROGRESS),
-
-	/**
-	 * @brief Exceeded Socket task limit.
-	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
-	 * */
-	ae2f_SysInetMk_LMT	ae2f_Sys_WIN(= WSAEPROCLIM),
-
-	/**
-	 * @brief Invalid pointer.	<ae2f_SysInetMk::pret_WSAData>
-	 * @see ae2f_SysInetMk
-	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
-	 * */
-	ae2f_SysInetMk_PTRINVAL	ae2f_Sys_WIN(= WSAEFAULT)
-
-
-} ae2f_eSysInetMk;
-
-typedef enum {
-	ae2f_SysInetDel_GOOD = 0,
-	ae2f_SysInetDel_NINIT		ae2f_Sys_WIN(= WSANOTINITIALISED),
-	/**
-	 * @brief Network is down.
-	 * @see https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2
-	 * */
-	ae2f_SysInetDel_NETDOWN	ae2f_Sys_WIN(= WSAENETDOWN),
-
-
-	/**
-	 * @brief Blocked by Windows Sockets 1.1 operations.
-	 * @see https://learn.microsoft.com/en-us/windows/desktop/WinSock/windows-sockets-error-codes-2
-	 * */
-	ae2f_SysInetDel_BLKED		ae2f_Sys_WIN(= WSAEINPROGRESS)
-} ae2f_eSysInetDel;
+#define ae2fsys_declmkinet	_ae2fsys_declmkinet
 
 /**
- * @def ae2f_SysInetMkData_DEC
- * @brief Optionally declares a variable.
- * @tparam prm_vname A name of the variable declared.
- * @see ae2f_SysInetMk
- * */
-#define ae2f_SysInetMkData_DEC(prm_vname)			\
-	ae2f_Sys_WIN(ae2f_SysInetMkData_DEC_WIN(prm_vname))	\
-	N_ae2f_Sys_WIN(ae2f_SysInetMkData_DEC_POSIX(prm_vname))
-
-/**
- * @def ae2f_SysInetMk(prm_VerReq, pret_WSAData)
+ * @fn	ae2fsys_initinet_imp
  * @brief 
- * Wrapper of WSAStartup.		\n
- * Does nothing on POSIX.		\n
- * See ae2f_SysInetDel for cleanup.
+ *	Wrapper of WSAStartup.		\n
+ *	Does nothing on POSIX.		\n
+ *	See `ae2fsys_stopinet_imp` for cleanup.
  *
  * @details
- * You would be able to use POSIX inet functions(sockets) after this.
+ *	You would be able to use POSIX inet functions(sockets) after this.	\n
+ *	POSIX has fallback, which is just initiallising `ret` as 0.
  *
- * @returns ae2f_eSysInetMk
+ * @param	enum AE2FSYS_INET_		ret
+ * @param	const ae2fsys_inet_version_t	c_inet_version	\n
+ *	Required version of socket library.
  *
- * @param prm_VerReq	<prm>		\n
- * Type: const WORD			\n
- * Brief: Required version of socket library.	\n
- * See: 
+ * @param[out]	ae2fsys_mkinet_t* ae2f_restrict	wr_inetdata	\n
+ * 	Valid output pointer for winsocket data.
  *
- * @param[out] pret_WSAData	<opt> <ptr>	\n
- * Type: ae2f_SysInetMkData_t*			\n
- * Brief: Output pointer for winsocket data.	\n
- *
- * @see ae2f_SysInetDel
+ * @see ae2fsys_stopinet_imp
  * 
  * */
-#define ae2f_SysInetMk(prm_VerReq, pret_WSAData)			\
-	ae2f_Sys_WIN(ae2f_SysInetMk_WIN(prm_VerReq, pret_WSAData))	\
-	N_ae2f_Sys_WIN(ae2f_SysInetMk_POSIX(prm_VerReq, pret_WSAData))
+#define	ae2fsys_initinet_imp	_ae2fsys_initinet_imp
 
 /**
- * @def ae2f_SysInetDel
- * @brief Wrapper of WSACleanup	\n
- * Cleanup library initialised by ae2f_SysInetMk.
+ * @fn ae2fsys_stopinet_imp
+ * @brief 
+ * 	Wrapper of WSACleanup	\n
+ * 	Cleanup library initialised by `ae2fsys_initinet_imp`.
  *
- * @returns ae2f_eSysInetDel
+ * @param	enum AE2FSYS_INET_	ret
  *
- * @see ae2f_SysInetMk
+ * @see ae2fsys_initinet_imp
  * */
-#define ae2f_SysInetDel()			\
-	ae2f_Sys_WIN(ae2f_SysInetDel_WIN())	\
-	N_ae2f_Sys_WIN(ae2f_SysInetDel_POSIX())
+#define	ae2fsys_stopinet_imp	_ae2fsys_stopinet_imp
 
 
 #endif

@@ -3,13 +3,15 @@
 #include <stdio.h>
 #include <time.h>
 #include <assert.h>
+#include <c89atomic.h>
 
 
 int A = 0;
 
-ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t);
 
-ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
+ae2fsys_thrdfn_t AThreadNotifier;
+
+ae2fsys_thrdres_t AThreadNotifier(ae2fsys_thrdprm_t prm) {
 	struct timespec	req, rem;
 	register long		done;
 
@@ -21,23 +23,23 @@ ae2f_SysThrdRes_t AThreadNotifier(ae2f_SysThrdPrm_t prm) {
 
 	printf("Thread child is starting\n");
 
-	_ae2f_SysThrdSleep_imp(done, &req, &rem);
+	ae2fsys_sleep_thrd_imp(done, &req, &rem);
 
 	(void)done;
 	A = 1;
 
 	printf("Thread child is ending\n");
-	return ae2f_reinterpret_cast(ae2f_SysThrdRes_t, 3);
+	return ae2f_reinterpret_cast(ae2fsys_thrdres_t, 3);
 }
 
 int main(void) {
-	register ae2f_eSysThrd_t	ret_stat = 0;
-	ae2f_SysThrd		ret_thrd0, ret_thrd1;
+	enum AE2FSYS_THRD_	ret_stat = 0;
+	ae2fsys_thrd		ret_thrd0, ret_thrd1;
 
-	ae2f_SysThrdRes_t	ret_rtn;
+	ae2fsys_thrdres_t	ret_rtn;
 	register union {
 		void*			m_v;
-		ae2f_SysThrdID_t	m_id;
+		ae2fsys_tid_t		m_id;
 	} id_for_printf;
 
 
@@ -46,7 +48,7 @@ int main(void) {
 	puts("Thread main is starting");
 
 #if 1
-	_ae2f_SysThrdMk_imp(
+	ae2fsys_mk_thrd_imp(
 			ret_stat
 			, ret_thrd0
 			, AThreadNotifier
@@ -54,7 +56,7 @@ int main(void) {
 			, 1024 * 1024
 			);
 
-	_ae2f_SysThrdMk_imp(
+	ae2fsys_mk_thrd_imp(
 			ret_stat
 			, ret_thrd1
 			, AThreadNotifier
@@ -68,8 +70,9 @@ int main(void) {
 	printf("ret_stat: %u\n", ae2f_reinterpret_cast(unsigned int, ret_stat));
 
 
-	_ae2f_SysThrdJoin_imp(
-			ret_stat
+	ae2fsys_join_thrd_imp(
+			L
+			, ret_stat
 			, ret_rtn
 			, ret_thrd0
 			);
@@ -82,8 +85,9 @@ int main(void) {
 			, ae2f_static_cast(int, ret_rtn)
 			);
 
-	_ae2f_SysThrdJoin_imp(
-			ret_stat
+	ae2fsys_join_thrd_imp(
+			L
+			, ret_stat
 			, ret_rtn
 			, ret_thrd1
 			);

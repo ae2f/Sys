@@ -1,84 +1,50 @@
 /**
  * @file Thrd.h
- * Detach is not implemented since I do not know a way to do this without 3rd object.
+ * @brief Non-detachable thread
  * */
 
-#ifndef ae2f_Sys_Thrd_h
-#define ae2f_Sys_Thrd_h
+#ifndef ae2fsys_Thrd_h
+#define ae2fsys_Thrd_h
 
-#include "./Thrd.core.h"
-#include "./Thrd.auto.h"
+#include "./thrd/WIN.auto.h"
+#include "./thrd/_linux.auto.h"
+#include "./thrd/POSIX.auto.h"
 
-
-/** @brief Return type for thread. */
-typedef _ae2f_SysThrdRes_t ae2f_SysThrdRes_t;
-
-
-/** @brief Parameters for thread */
-typedef _ae2f_SysThrdPrm_t ae2f_SysThrdPrm_t;
-
-
-/** @brief Thread ID */
-typedef _ae2f_SysThrdID_t ae2f_SysThrdID_t;
-
-/** @brief Thread starting function type */
-typedef ae2f_SysThrdRes_t ae2f_SysThrdFn_t(ae2f_SysThrdPrm_t);
-
-
-
-/** @brief 
- * enum values related to thread. \n
- * 't follows C11 thread standard.
+/**
+ * @typedef	ae2fsys_thrdres_t
+ * @brief	Return type for a thread.
  * */
-typedef enum ae2f_eSysThrd_t {
-	/** Good */
-	ae2f_eSysThrdSuccess,
+#define	ae2fsys_thrdres_t	ae2fsys_thrdres_t
 
-	/** Out of host memory */
-	ae2f_eSysThrdMemOut,
+/**
+ * @typedef	ae2fsys_thrdprm_t
+ * @brief	Parameters for a thread
+ * */
+#define	ae2fsys_thrdprm_t	ae2fsys_thrdprm_t
 
-	/** Timeout */
-	ae2f_eSysThrdTmOut,
+/**
+ * @typedef	ae2fsys_tid_t
+ * @brief	Thread ID 
+ * */
+#define	ae2fsys_tid_t		ae2fsys_tid_t
 
-	ae2f_eSysThrdBusy,
-	ae2f_eSysThrdErr
-} ae2f_eSysThrd_t;
+/**
+ * @typedef	ae2fsys_thrdfn_t
+ * @brief Thread starting function type 
+ * */
+#define	ae2fsys_thrdfn_t	ae2fsys_thrdfn_t
 
 /** 
- * @brief A thread. 
+ * @typedef	ae2fsys_thrd
+ * @brief	A thread. 
  * @warning
- * This structure's size could vary for implementation.
+ * 		This structure's size could vary for implementation.
  * */
-typedef struct 
-{
-	/** thread id */
-	ae2f_SysThrdID_t	m_id;
+#define	ae2fsys_thrd		ae2fsys_thrd
 
-	/** stack ptr (linux only) */
-	ae2f_Sys__linux(_ae2f_SysThrdStckPtr_t	m_stck;)
-
-	/** stack size (linux only) */
-	ae2f_Sys__linux(size_t	m_stcksz;)
-} ae2f_SysThrd;
-
-#endif
-
-#ifdef ae2f_Sys_Thrd_auto_h
-
-#ifndef _ae2f_SysThrdMk_imp
-typedef char _ae2f_SysThrdMk_imp_NOT_FOUND[-1];
-#endif
-
-#ifndef _ae2f_SysThrdJoin_imp
-typedef char _ae2f_SysThrdJoin_imp_NOT_FOUND[-1];
-#endif
-
-#ifndef _ae2f_SysThrdYield_imp
-typedef char _ae2f_SysThrdYield_imp_NOT_FOUND[-1];
-#endif
-
-#ifndef _ae2f_SysThrdSleep_imp
-typedef char _ae2f_SysThrdSleep_imp_NOT_FOUND[-1];
-#endif
+#define	ae2fsys_mk_thrd_imp	_ae2fsys_mk_thrd_imp
+#define	ae2fsys_join_thrd_imp	_ae2fsys_join_thrd_imp
+#define	ae2fsys_yield_thrd_imp	_ae2fsys_yield_thrd_imp
+#define	ae2fsys_sleep_thrd_imp	_ae2fsys_sleep_thrd_imp
 
 #endif

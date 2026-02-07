@@ -2,12 +2,8 @@ option(ae2f_TEST "" ON)
 option(ae2f_MAC_BUILD "" 	ON)
 option(ae2f_IS_SHARED "" 	ON)
 option(ae2f_Sys_DEVEL ""	OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-if(${ae2f_Sys_DEVEL})
-	set(HELPER_LINK PUBLIC)
-else()
-	set(HELPER_LINK INTERFACE)
-endif()
 
 enable_testing()
 
@@ -53,28 +49,16 @@ if(NOT TARGET ae2f::Sys)
 	file(GLOB_RECURSE sys-src ${PROJECT_SOURCE_DIR}/src/*)
 
 	ae2f_Macro_init(1 30 30)
-	if(${ae2f_Sys_DEVEL})
-		message(STATUS "ae2f::Sys Developer mode")
-		ae2f_Macro_Lib_V(
-			ae2f Sys STATIC
-			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
-			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
-			${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
-			${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
-			inc
-			inc/ae2f/Sys.h ${sys-inc} ${sys-src}
-			)
-	else()
-		ae2f_Macro_Lib_V(
-			ae2f Sys INTERFACE 
-			${PROJECT_SOURCE_DIR}/src/sys "*.imp.c" 
-			${PROJECT_SOURCE_DIR}/src/sys "*.def.c" 
-			${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
-			${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
-			inc
-			inc/ae2f/Sys.h ${sys-inc}
-			)
-	endif()
+
+	ae2f_Macro_Lib_V2(
+		ae2f Sys INTERFACE 
+		${PROJECT_SOURCE_DIR}/src "*.def.c" 
+		${PROJECT_SOURCE_DIR}/src "*.def.c" 
+		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
+		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
+		inc ${ae2f_Sys_DEVEL}
+		inc/ae2f/Sys.h ${sys-inc}
+		)
 
 	install(
 		TARGETS c89atomic c89atomic_common
@@ -84,10 +68,10 @@ if(NOT TARGET ae2f::Sys)
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 
-	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} ae2f::Core)
-	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} ae2f::SysCore)
-	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} ae2f::Preproc)
-	target_link_libraries(${ae2f__Sys__TENT} ${HELPER_LINK} c89atomic)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Core)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::SysCore)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
+	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
 
 	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/primal)
 	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/enums)
