@@ -33,7 +33,6 @@ typedef struct
 {
 
 	int_least64_t		m_ftxret;
-	size_t			m_stcksz;
 	void*			m_arg;
 
 
@@ -68,71 +67,68 @@ static ae2fsys_thrdres_t _linux_ae2fsys_thrd_runner(_linux_ae2fsys_thrd_runner_p
 	return -1;
 }
 
-/**
- * @macro _linux_ae2fsys_thrd_stcktop_oper
- * A macro to make top pointer.
- * */
-#ifndef _linux_ae2fsys_thrd_stcktop_oper
-#define _linux_ae2fsys_thrd_stcktop_oper(prm_ptr, prm_sz)	\
-	((prm_ptr) + (prm_sz))
+
+#ifndef	_linux_ae2fsys_thrd_mk_stckcfg
+
+#define	_linux_ae2fsys_thrd_mk_stckcfg(rdwr_ptr, c_sz)		\
+	ae2f_reinterpret_cast(					\
+			void*					\
+			, ((ae2f_reinterpret_cast(uintptr_t, rdwr_ptr)	\
+				+ (c_sz) + (sizeof(void*) << 3) - 1)	\
+				& (~ae2f_static_cast(uintptr_t, (sizeof(void*) << 3) - 1))) \
+				+ ae2f_static_cast(uintptr_t, 1 << 9)	\
+				+ ae2f_static_cast(uintptr_t, 1 << 12)	\
+				+ ae2f_static_cast(uintptr_t, sizeof(void*) << 3)		\
+			)
 #endif
 
-typedef union
-{
-	void* ae2f_restrict				m_void;
-	char* ae2f_restrict				m_char;
-	_linux_ae2fsys_thrd_runner_prm* ae2f_restrict	m_prm;
-} _linux_ae2fsys_ptr_thrdstck_t;
+#ifndef	_linux_ae2fsys_thrd_mk_stckentry
+#define	_linux_ae2fsys_thrd_mk_stckentry(rdwr_ptr, c_sz)	\
+	ae2f_reinterpret_cast(					\
+			void*					\
+			, ((ae2f_reinterpret_cast(uintptr_t, rdwr_ptr)			\
+				+ (c_sz) + (sizeof(void*) << 3) - 1)	\
+				& (~ae2f_static_cast(uintptr_t, (sizeof(void*) << 3) - 1)))	\
+				+ ae2f_static_cast(uintptr_t, 1 << 9)			\
+				+ ae2f_static_cast(uintptr_t, 1 << 12)			\
+			)
+#endif
+
+#ifndef	_linux_ae2fsys_thrd_mk_stckallocsz
+#define	_linux_ae2fsys_thrd_mk_stckallocsz(c_sz)	\
+	(	\
+		(c_sz)	\
+		+ ae2f_static_cast(size_t, sizeof(_linux_ae2fsys_thrd_runner_prm))	\
+		+ ae2f_static_cast(size_t, sizeof(void*)) * 32	\
+		+ ae2f_static_cast(size_t, 1 << 9)		\
+		+ ae2f_static_cast(size_t, 1 << 12)		\
+		)
+#endif
 
 
 typedef struct 
 {
-	/** @brief thread id */
-	ae2fsys_tid_t	m_id;
 
 	/** @brief stack ptr */
-	_linux_ae2fsys_ptr_thrdstck_t	m_stck__linux;
+	union {
+		void* ae2f_restrict				m_void;
+		char* ae2f_restrict				m_char;
+		_linux_ae2fsys_thrd_runner_prm* ae2f_restrict	m_prm;
+		uintptr_t					m_uintptr;
+
+	}	m_stckcfg__linux, m_stckbase__linux;
 
 	/** @brief stack size (linux only) */
 	size_t				m_stcksz__linux;
+
+	/** @brief thread id */
+	ae2fsys_tid_t	m_id;
 } ae2fsys_thrd;
 
 
 #if	!__ae2f_MACRO_GENERATED
 #define	__linux_ae2fsys_mkthrd_imp	_linux_ae2fsys_mkthrd_imp
 #endif
-
-ae2f_MAC() _linux_ae2fsys_mkthrd_imp(
-		enum AE2FSYS_THRD_				ret_stat,
-		ae2fsys_tid_t					ret_tid,
-		_linux_ae2fsys_thrd_runner_prm* ae2f_restrict const
-								prm_stck,
-		void* ae2f_restrict const			prm_stcktop
-		)
-{
-	(ret_tid) = clone(
-			ae2f_reinterpret_cast(
-				ae2fsys_thrdfn_t*
-				, _linux_ae2fsys_thrd_runner
-				)
-			, (prm_stcktop)
-			, (CLONE_VM | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_THREAD | CLONE_SYSVSEM)
-			, (prm_stck)
-			);
-
-	switch((ret_tid)) {
-		case -1:
-			(ret_stat) = AE2FSYS_THRD_UNKNOWN;
-			break;
-		case 0:
-			syscall(SYS_exit, 0);
-			break;
-		default:
-			(ret_stat) = AE2FSYS_THRD_GOOD;
-			break;
-	}
-}
-
 
 /**
  * @brief
@@ -146,44 +142,60 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 		const size_t		prm_stcksz
 		)
 {
-	(ret_thrd).m_stck__linux.m_void = mmap(
-			ae2f_NIL, ((ret_thrd).m_stcksz__linux = (
-					(prm_stcksz)
-					+ ae2f_static_cast(size_t, sizeof(_linux_ae2fsys_thrd_runner_prm))
-					+ ae2f_static_cast(size_t, sizeof(void*))
-					)
-			      )
-			, PROT_READ | PROT_WRITE
+	(ret_thrd).m_stckbase__linux.m_void = mmap(
+			ae2f_NIL, ((ret_thrd).m_stcksz__linux = 
+				_linux_ae2fsys_thrd_mk_stckallocsz(prm_stcksz)
+				)
+			, PROT_READ | PROT_WRITE 
 			, MAP_PRIVATE | MAP_STACK | MAP_ANONYMOUS
 			, -1, 0
 			);
 
-	if(MAP_FAILED == (ret_thrd).m_stck__linux.m_void || !(ret_thrd).m_stck__linux.m_void) {
+	if(MAP_FAILED == (ret_thrd).m_stckbase__linux.m_void || !(ret_thrd).m_stckbase__linux.m_void) {
 		(ret_stat) = AE2FSYS_THRD_MEMOUT;
-		(ret_thrd).m_stck__linux.m_void = ae2f_NIL;
+		(ret_thrd).m_stckbase__linux.m_void = ae2f_NIL;
 		(ret_thrd).m_id = -1;
 	}
 	else {
-		(ret_thrd).m_stck__linux.m_prm->m_arg = (prm_arg);
-		(ret_thrd).m_stck__linux.m_prm->m_fn = (prm_func);
-		(ret_thrd).m_stck__linux.m_prm->m_stcksz = (ret_thrd).m_stcksz__linux;
+		(ret_thrd).m_stckcfg__linux.m_void
+			= _linux_ae2fsys_thrd_mk_stckcfg((ret_thrd).m_stckbase__linux.m_void, prm_stcksz);
 
-		__linux_ae2fsys_mkthrd_imp(
-				ret_stat, (ret_thrd).m_id
-				, (ret_thrd).m_stck__linux.m_prm
-				, _linux_ae2fsys_thrd_stcktop_oper(
-					(ret_thrd).m_stck__linux.m_char
-					, (prm_stcksz)
+		(ret_thrd).m_stckcfg__linux.m_prm->m_arg = (prm_arg);
+		(ret_thrd).m_stckcfg__linux.m_prm->m_fn = (prm_func);
+
+		(ret_thrd).m_id = clone(
+				ae2f_reinterpret_cast(
+					ae2fsys_thrdfn_t*
+					, _linux_ae2fsys_thrd_runner
 					)
+				, _linux_ae2fsys_thrd_mk_stckentry(
+					(ret_thrd).m_stckbase__linux.m_void
+					, prm_stcksz)
+				, (CLONE_VM | CLONE_FS | CLONE_FILES 
+					| CLONE_SIGHAND | CLONE_THREAD 
+					| CLONE_SYSVSEM)
+				, (ret_thrd).m_stckcfg__linux.m_void
 				);
+
+		switch((ret_thrd).m_id) {
+			case -1:
+				(ret_stat) = AE2FSYS_THRD_UNKNOWN;
+				break;
+			case 0:
+				syscall(SYS_exit, 0);
+				break;
+			default:
+				(ret_stat) = AE2FSYS_THRD_GOOD;
+				break;
+		}
 
 		ae2f_unexpected_but_if((ret_stat))
 		{
 			munmap(
-					(ret_thrd).m_stck__linux.m_void
+					(ret_thrd).m_stckbase__linux.m_void
 					, (ret_thrd).m_stcksz__linux
 			      );
-			(ret_thrd).m_stck__linux.m_void = ae2f_NIL;
+			(ret_thrd).m_stckbase__linux.m_void = ae2f_NIL;
 		}
 	}
 }
@@ -197,22 +209,20 @@ ae2f_MAC((L, )) ae2fsys_join_thrd_imp(
 {
 	enum AE2FSYS_FTXWAIT_	L$$res = AE2FSYS_FTXWAIT_GOOD;
 
-	unless((prm_thrd).m_stck__linux.m_void) {
+	unless((prm_thrd).m_stckbase__linux.m_void) {
 		(ret_stat) = AE2FSYS_THRD_UNKNOWN;
 	}
 	else {
-		unless((prm_thrd).m_stck__linux.m_prm->m_done) {
-			_ae2fsys_ftxwait_imp(
-					L
-					, L$$res
-					, &(prm_thrd).m_stck__linux.m_prm->m_done
-					, 0
-					, 0
-					);
+		_ae2fsys_ftxwait_imp(
+				L
+				, L$$res
+				, &(prm_thrd).m_stckcfg__linux.m_prm->m_done
+				, 0
+				, 0
+				);
 
-			(ret_rtn) = (prm_thrd).m_stck__linux.m_prm->m_ret;
-			munmap((prm_thrd).m_stck__linux.m_void, (prm_thrd).m_stcksz__linux);
-		}
+		(ret_rtn) = (prm_thrd).m_stckcfg__linux.m_prm->m_ret;
+		munmap((prm_thrd).m_stckbase__linux.m_void, (prm_thrd).m_stcksz__linux);
 
 		if(L$$res) {
 			(ret_stat) = AE2FSYS_THRD_UNKNOWN;
@@ -237,5 +247,4 @@ ae2f_MAC() ae2fsys_sleep_thrd_imp(
 }
 
 #endif
-
 #endif
