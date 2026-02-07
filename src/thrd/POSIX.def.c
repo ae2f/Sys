@@ -58,7 +58,7 @@ ae2f_MAC((L, )) ae2fsys_join_thrd_imp(
 		ae2fsys_thrd		ref_thrd
 		)
 {
-	ae2fsys_thrdres_t	L$$ret = -1;
+	ae2fsys_thrdres_t	L$$ret = ae2f_reinterpret_cast(ae2fsys_thrdres_t, -1);
 	switch(pthread_join((ref_thrd).m_id, &(L$$ret)))
 	{
 		case EDEADLK:
