@@ -9,6 +9,8 @@
 #include <errno.h>
 #include <sched.h>
 
+#include <ae2f/Sys/Thrd.core.h>
+
 typedef	void*		ae2fsys_thrdres_t;
 typedef	void*		ae2fsys_thrdprm_t;
 typedef pthread_t	ae2fsys_tid_t;
