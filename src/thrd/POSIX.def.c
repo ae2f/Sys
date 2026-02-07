@@ -16,6 +16,12 @@ typedef	void*		ae2fsys_thrdprm_t;
 typedef pthread_t	ae2fsys_tid_t;
 typedef ae2fsys_thrdres_t ae2fsys_thrdfn_t(ae2fsys_thrdprm_t);
 
+typedef struct 
+{
+	/** @brief thread id */
+	ae2fsys_tid_t	m_id;
+} ae2fsys_thrd;
+
 ae2f_MAC() ae2fsys_mk_thrd_imp(
 		enum AE2FSYS_THRD_	ret_stat,
 		ae2fsys_thrd		ret_thrd,

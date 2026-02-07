@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <time.h>
 #include <assert.h>
+#include <ae2f/Sys/Thrd.core.h>
 
 typedef	DWORD	ae2fsys_thrdres_t;
 typedef LPVOID	ae2fsys_thrdprm_t;
