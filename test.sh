@@ -36,7 +36,7 @@ for _ae2f_MAC_BUILD in ${__ae2f_IS_SHARED[@]}; do
 		echo "Build failed"
 			exit 1	
 		}
-	ctest --test-dir $builddir -VV -C $buildtype || {
+	ctest --test-dir $builddir -VV -C $buildtype --output-on-failure || {
 		echo "Test failed"
 			exit 1
 		}

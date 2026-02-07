@@ -29,12 +29,18 @@
 #define	ae2fsys_sock_blkmode_t		ae2fsys_sock_blkmode_t
 
 /**
- * @fn		ae2fsys_set_sock_blkmode_imp
+ * @fn		
+ * void ae2fsys_set_sock_blkmode_imp(
+ * 	ae2fsys_sock_blkmode_t&	rdwr_mem,
+ * 	const ae2fsys_sock_t	h_sock,
+ * 	const bool		c_blkmode,
+ * 	enum AE2FSYS_SOCK_&	res
+ * )
  * @brief	set a socket's blocking mode
- * @param	ae2fsys_sock_blkmode_t	rdwr_mem
- * @param	const ae2fsys_sock_t	h_sock
- * @param	const bool		c_blkmode
- * @param	enum AE2FSYS_SOCK_	res
+ * @param	rdwr_mem
+ * @param	h_sock
+ * @param	c_blkmode
+ * @param	res
  * */
 #define ae2fsys_set_sock_blkmode_imp	_ae2fsys_set_sock_blkmode_imp
 
