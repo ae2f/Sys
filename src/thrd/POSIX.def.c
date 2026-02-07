@@ -56,16 +56,18 @@ ae2f_MAC((L, )) ae2fsys_join_thrd_imp(
 	switch(pthread_join((ref_thrd).m_id, &(L$$ret)))
 	{
 		case EDEADLK:
-			(ret_stat) = ae2f_eSysThrdBusy;
+			(ret_stat) = AE2FSYS_THRD_BUSY;
 			break;
+
+		default:
 		case EINVAL:
-			(ret_stat) = (ae2f_eSysThrdErr);
+			(ret_stat) = AE2FSYS_THRD_UNKNOWN;
 			break;
 		case ESRCH:
-			(ret_stat) = (ae2f_eSysThrdMemOut);
+			(ret_stat) = AE2FSYS_THRD_MEMOUT;
 			break;
 		case 0:
-			(ret_stat) = ae2f_eSysThrdSuccess;
+			(ret_stat) = AE2FSYS_THRD_GOOD;
 			break;
 	}
 
