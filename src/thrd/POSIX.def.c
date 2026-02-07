@@ -30,14 +30,12 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 		const size_t		prm_stcksz_unused
 		)
 {
-	(ret_stat) = pthread_create(
+	switch(pthread_create(
 			&(ret_thrd).m_id
 			, ae2f_reinterpret_cast(const pthread_attr_t*, NULL)
 			, prm_func
 			, prm_arg
-			);
-
-	switch(ret_stat) {
+			)) {
 		case 0:
 			(ret_stat) = AE2FSYS_THRD_GOOD;
 			break;
