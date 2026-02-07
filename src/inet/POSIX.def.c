@@ -31,5 +31,7 @@ ae2f_MAC() POSIX_ae2fsys_initinet_imp(
 #define	_ae2fsys_stopinet_imp(ret)	\
 	_POSIX_ae2fsys_initinet_imp(ret)
 
+#define	closesocket	close
+
 #endif
 #endif
