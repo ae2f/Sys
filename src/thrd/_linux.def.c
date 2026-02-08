@@ -6,14 +6,14 @@
 
 #if ae2f_Sys__linux(!)0
 
-#ifndef _GNU_SOURCE
-#define _GNU_SOURCE
-#endif
+
+#undef	_GNU_SOURCE
+#define	_GNU_SOURCE	1
+#include <sched.h>
 
 #include <sys/mman.h>
 #include <sys/syscall.h>
 #include <unistd.h>
-#include <sched.h>
 #include <linux/sched.h>
 #include <signal.h>
 #include <stdlib.h>
