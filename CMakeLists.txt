@@ -56,7 +56,7 @@ if(NOT TARGET ae2f::Sys)
 		${PROJECT_SOURCE_DIR}/src "*.def.c" 
 		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
 		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
-		inc ${ae2f_Sys_DEVEL}
+		inc ON
 		inc/ae2f/Sys.h ${sys-inc}
 		)
 

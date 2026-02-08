@@ -183,6 +183,7 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 					)
 				, ae2f_reinterpret_cast(char*, _linux_ae2fsys_thrd_mk_stckentry(
 						(ret_thrd).m_stckbase__linux.m_uintptr 
+						+ (size_t)(ret_thrd).m_pgsz
 						, (ret_thrd).m_stcksz__linux 
 						- _linux_ae2fsys_thrdstck_redzone))
 				, (CLONE_VM | CLONE_FS | CLONE_FILES 
