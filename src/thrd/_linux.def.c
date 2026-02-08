@@ -7,7 +7,7 @@
 #if ae2f_Sys__linux(!)0
 
 #ifndef _GNU_SOURCE
-#define _GNU_SOURCE	1
+#define _GNU_SOURCE
 #endif
 
 #include <sys/mman.h>
