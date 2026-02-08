@@ -45,8 +45,8 @@ typedef struct
 {
 	/** @brief stack ptr */
 	union {
-		void* ae2f_restrict				m_void;
-		char* ae2f_restrict				m_char;
+		void* 				m_void;
+		char* 				m_char;
 		uintptr_t					m_uintptr;
 
 	} m_stckbase__linux;
@@ -54,7 +54,7 @@ typedef struct
 	void*			m_arg__linux;
 
 	ae2fsys_thrdfn_t*	m_fn__linux;
-	_linux_ae2fsys_thrd_state_t* ae2f_restrict	m_state__linux;
+	_linux_ae2fsys_thrd_state_t*	m_state__linux;
 
 
 	/** @brief stack size (linux only) */
@@ -70,14 +70,14 @@ typedef struct
 static ae2fsys_thrdres_t _linux_ae2fsys_thrd_runner(ae2fsys_thrdprm_t prm_stck) {
 #define	prm_stck	ae2f_reinterpret_cast(ae2fsys_thrd* ae2f_restrict, prm_stck)
 
-	_linux_ae2fsys_thrd_state_t* ae2f_restrict const
-		STATE = prm_stck->m_state__linux;
 
-	enum	AE2FSYS_FTXWAKE_
-		ENUM;
+	ae2f_expected_if(prm_stck && prm_stck->m_state__linux) {
 
+		_linux_ae2fsys_thrd_state_t* ae2f_restrict const
+			STATE = prm_stck->m_state__linux;
+		enum	AE2FSYS_FTXWAKE_
+			ENUM;
 
-	ae2f_expected_if(prm_stck && STATE) {
 		/** child section */
 		c89atomic_fetch_and_32(&STATE->m_u32_atom, 0);
 		STATE->m_done = 0;
@@ -127,6 +127,10 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 		const size_t		prm_stcksz
 		)
 {
+	(ret_thrd).m_state__linux = ae2f_reinterpret_cast(
+			_linux_ae2fsys_thrd_state_t* 
+			, malloc(sizeof(_linux_ae2fsys_thrd_state_t))
+			);
 
 	(ret_thrd).m_stcksz__linux = 
 		_linux_ae2fsys_thrd_mk_stckallocsz(prm_stcksz) + _linux_ae2fsys_thrdstck_redzone;
@@ -145,16 +149,14 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 			, -1, 0
 			);
 
+
 	ae2f_unexpected_but_if(mprotect((ret_thrd).m_stckbase__linux.m_void
 				, ae2f_static_cast(size_t, (ret_thrd).m_pgsz__linux), PROT_NONE
 				)) {
 		munmap((ret_thrd).m_stckbase__linux.m_void, (ret_thrd).m_stcksz__linux);
 		(ret_thrd).m_stckbase__linux.m_void = 0;
 	} else {
-		(ret_thrd).m_state__linux = ae2f_reinterpret_cast(
-				_linux_ae2fsys_thrd_state_t*
-				, malloc(sizeof(_linux_ae2fsys_thrd_state_t))
-				);
+
 	}
 
 	ae2f_unexpected_but_if(
@@ -180,10 +182,7 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 		(ret_thrd).m_fn__linux = (prm_func);
 
 		(ret_thrd).m_id = clone(
-				ae2f_reinterpret_cast(
-					ae2fsys_thrdfn_t*
-					, _linux_ae2fsys_thrd_runner
-					)
+				_linux_ae2fsys_thrd_runner
 				, ae2f_reinterpret_cast(char*, _linux_ae2fsys_thrd_mk_stckentry(
 						(ret_thrd).m_stckbase__linux.m_uintptr 
 						+ (size_t)(ret_thrd).m_pgsz__linux
