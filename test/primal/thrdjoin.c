@@ -53,7 +53,7 @@ int main(void) {
 			, ret_thrd0
 			, AThreadNotifier
 			, NULL
-			, 1024 * 1024
+			, 8 * 1024 * 1024
 			);
 
 	ae2fsys_mk_thrd_imp(
@@ -61,7 +61,7 @@ int main(void) {
 			, ret_thrd1
 			, AThreadNotifier
 			, NULL
-			, 1024 * 1024
+			, 8 * 1024 * 1024
 			);
 #else
 #endif

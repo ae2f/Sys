@@ -7,7 +7,7 @@
 #if ae2f_Sys__linux(!)0
 
 #ifndef _GNU_SOURCE
-#define _GNU_SOURCE
+#define _GNU_SOURCE	1
 #endif
 
 #include <sys/mman.h>
@@ -79,12 +79,10 @@ static ae2fsys_thrdres_t _linux_ae2fsys_thrd_runner(ae2fsys_thrdprm_t prm_stck) 
 			ENUM;
 
 		/** child section */
-		c89atomic_fetch_and_32(&STATE->m_u32_atom, 0);
-		STATE->m_done = 0;
 		STATE->m_ret = (prm_stck->m_fn__linux)((prm_stck)->m_arg__linux);
 		STATE->m_done = 1;
 		_ae2fsys_ftxwake_one_imp(L, ENUM, &STATE->m_done);
-		c89atomic_fetch_or_32(&STATE->m_u32_atom, 1);
+		c89atomic_fetch_or_32(&STATE->m_u32_atom, 0);
 		(void)ENUM;
 		return 0;
 	}
@@ -131,6 +129,11 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 			_linux_ae2fsys_thrd_state_t* 
 			, malloc(sizeof(_linux_ae2fsys_thrd_state_t))
 			);
+
+	if((ret_thrd).m_state__linux) {
+		(ret_thrd).m_state__linux->m_done = 0;
+		(ret_thrd).m_state__linux->m_u32_atom = 1;
+	}
 
 	(ret_thrd).m_stcksz__linux = 
 		_linux_ae2fsys_thrd_mk_stckallocsz(prm_stcksz) + _linux_ae2fsys_thrdstck_redzone;
@@ -236,7 +239,7 @@ ae2f_MAC((L, )) ae2fsys_join_thrd_imp(
 		(ret_stat) = AE2FSYS_THRD_UNKNOWN;
 	}
 	else {
-		if(!c89atomic_load_32(&prm_thrd.m_state__linux->m_u32_atom)) {
+		if(c89atomic_load_32(&prm_thrd.m_state__linux->m_u32_atom)) {
 			_ae2fsys_ftxwait_imp(
 					L
 					, L$$res
