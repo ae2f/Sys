@@ -2,6 +2,7 @@
 #define ae2fsys_thrd__linux_auto_h
 
 #include <ae2f/Sys.h>
+#include <stdatomic.h>
 
 #if ae2f_Sys__linux(!)0
 
@@ -16,6 +17,7 @@
 #include <linux/sched.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <c89atomic.h>
 
 #include <ae2f/Sys/Ftx.h>
 #include <ae2f/Sys/Thrd.core.h>
@@ -35,7 +37,8 @@ typedef struct {
 	 * This member must not be changed by multiple threads
 	 * */
 	ae2fsys_ftxel_t		m_done;
-	int			m_ret;
+	ae2fsys_thrdres_t	m_ret;
+	c89atomic_uint32	m_u32_atom;
 }	_linux_ae2fsys_thrd_state_t;
 
 typedef struct 
@@ -56,7 +59,7 @@ typedef struct
 
 	/** @brief stack size (linux only) */
 	size_t			m_stcksz__linux;
-	long			m_pgsz;
+	long			m_pgsz__linux;
 
 	/** @brief thread id */
 	ae2fsys_tid_t		m_id;
@@ -76,11 +79,12 @@ static ae2fsys_thrdres_t _linux_ae2fsys_thrd_runner(ae2fsys_thrdprm_t prm_stck) 
 
 	ae2f_expected_if(prm_stck && STATE) {
 		/** child section */
+		c89atomic_fetch_and_32(&STATE->m_u32_atom, 0);
 		STATE->m_done = 0;
 		STATE->m_ret = (prm_stck->m_fn__linux)((prm_stck)->m_arg__linux);
 		STATE->m_done = 1;
-
 		_ae2fsys_ftxwake_one_imp(L, ENUM, &STATE->m_done);
+		c89atomic_fetch_or_32(&STATE->m_u32_atom, 1);
 		(void)ENUM;
 		return 0;
 	}
@@ -127,11 +131,11 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 	(ret_thrd).m_stcksz__linux = 
 		_linux_ae2fsys_thrd_mk_stckallocsz(prm_stcksz) + _linux_ae2fsys_thrdstck_redzone;
 
-	(ret_thrd).m_pgsz	= sysconf(_SC_PAGESIZE);
+	(ret_thrd).m_pgsz__linux	= sysconf(_SC_PAGESIZE);
 
 	(ret_thrd).m_stcksz__linux = 
-		((ret_thrd).m_stcksz__linux + ae2f_static_cast(size_t, (ret_thrd).m_pgsz - 1))
-		& ae2f_static_cast(size_t, ~((ret_thrd).m_pgsz - 1));
+		((ret_thrd).m_stcksz__linux + ae2f_static_cast(size_t, (ret_thrd).m_pgsz__linux - 1))
+		& ae2f_static_cast(size_t, ~((ret_thrd).m_pgsz__linux - 1));
 
 	(ret_thrd).m_stckbase__linux.m_void = mmap(
 			ae2f_NIL
@@ -142,7 +146,7 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 			);
 
 	ae2f_unexpected_but_if(mprotect((ret_thrd).m_stckbase__linux.m_void
-				, ae2f_static_cast(size_t, (ret_thrd).m_pgsz), PROT_NONE
+				, ae2f_static_cast(size_t, (ret_thrd).m_pgsz__linux), PROT_NONE
 				)) {
 		munmap((ret_thrd).m_stckbase__linux.m_void, (ret_thrd).m_stcksz__linux);
 		(ret_thrd).m_stckbase__linux.m_void = 0;
@@ -172,7 +176,6 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 		(ret_thrd).m_id = -1;
 	}
 	else {
-
 		(ret_thrd).m_arg__linux = (prm_arg);
 		(ret_thrd).m_fn__linux = (prm_func);
 
@@ -183,7 +186,7 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 					)
 				, ae2f_reinterpret_cast(char*, _linux_ae2fsys_thrd_mk_stckentry(
 						(ret_thrd).m_stckbase__linux.m_uintptr 
-						+ (size_t)(ret_thrd).m_pgsz
+						+ (size_t)(ret_thrd).m_pgsz__linux
 						, (ret_thrd).m_stcksz__linux 
 						- _linux_ae2fsys_thrdstck_redzone))
 				, (CLONE_VM | CLONE_FS | CLONE_FILES 
@@ -234,13 +237,15 @@ ae2f_MAC((L, )) ae2fsys_join_thrd_imp(
 		(ret_stat) = AE2FSYS_THRD_UNKNOWN;
 	}
 	else {
-		_ae2fsys_ftxwait_imp(
-				L
-				, L$$res
-				, &(prm_thrd).m_state__linux->m_done
-				, 0
-				, 0
-				);
+		if(!c89atomic_load_32(&prm_thrd.m_state__linux->m_u32_atom)) {
+			_ae2fsys_ftxwait_imp(
+					L
+					, L$$res
+					, &(prm_thrd).m_state__linux->m_done
+					, 0
+					, 0
+					);
+		}
 
 		(ret_rtn) = (prm_thrd).m_state__linux->m_ret;
 		munmap((prm_thrd).m_stckbase__linux.m_void, (prm_thrd).m_stcksz__linux);
