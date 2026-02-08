@@ -191,7 +191,7 @@ ae2f_MAC() ae2fsys_mk_thrd_imp(
 						- _linux_ae2fsys_thrdstck_redzone))
 				, (CLONE_VM | CLONE_FS | CLONE_FILES 
 					| CLONE_SIGHAND | CLONE_THREAD 
-					| CLONE_SYSVSEM)
+					| CLONE_SYSVSEM | CLONE_PARENT_SETTID | CLONE_CHILD_CLEARTID)
 				, &(ret_thrd)
 				);
 
