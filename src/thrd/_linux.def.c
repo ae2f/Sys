@@ -2,13 +2,12 @@
 #define ae2fsys_thrd__linux_auto_h
 
 #include <ae2f/Sys.h>
-#include <stdatomic.h>
 
 #if ae2f_Sys__linux(!)0
 
 
 #undef	_GNU_SOURCE
-#define	_GNU_SOURCE	1
+#define	_GNU_SOURCE	0
 #include <sched.h>
 
 #include <sys/mman.h>
