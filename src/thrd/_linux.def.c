@@ -71,7 +71,6 @@ __attribute__((unused))
 #endif
 static ae2fsys_thrdres_t _linux_ae2fsys_thrd_runner(ae2fsys_thrdprm_t prm_stck) {
 #define	prm_stck	ae2f_reinterpret_cast(ae2fsys_thrd* ae2f_restrict, prm_stck)
-	(void)_linux_ae2fsys_thrd_runner;
 
 	ae2f_expected_if(prm_stck && prm_stck->m_state__linux) {
 

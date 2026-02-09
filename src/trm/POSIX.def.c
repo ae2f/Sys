@@ -27,12 +27,12 @@ ae2f_MAC()	ae2fsys_clear_trm(void)
 	fflush(stdout);
 }
 
-ae2f_MAC()	ae2fsys_trm_goto(
+ae2f_MAC((L, ))	ae2fsys_trm_goto(
 		const ae2fsys_trmpos_t	c_col,
 		const ae2fsys_trmpos_t	c_row
 		)
 {
-	unless((c_col) && (c_row)) {
+	if((c_col) && (c_row)) {
 		printf("\x1B[%d;%dH", (c_col), (c_row));
 		fflush(stdout);
 	}

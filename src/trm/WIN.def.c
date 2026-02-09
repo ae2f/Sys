@@ -14,6 +14,9 @@
 	(_isatty(_fileno(stdout)) || _isatty(_fileno(stderr)))
 
 
+typedef	SHORT ae2fsys_trmpos_t;
+
+/** currently no implementation available on windows */
 
 #endif
 #endif
