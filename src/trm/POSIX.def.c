@@ -21,24 +21,24 @@
 
 typedef	int ae2fsys_trmpos_t;
 
-ae2f_MAC()	ae2fsys_clear_trm(void)
+ae2f_MAC()	ae2fsys_clear_trm_simple_imp(void)
 {
 	printf("\x1B[2J\x1B[H");
 	fflush(stdout);
 }
 
-ae2f_MAC((L, ))	ae2fsys_trm_goto(
+ae2f_MAC((L, ))	ae2fsys_trm_goto_simple_imp(
 		const ae2fsys_trmpos_t	c_col,
 		const ae2fsys_trmpos_t	c_row
 		)
 {
 	if((c_col) && (c_row)) {
-		printf("\x1B[%d;%dH", (c_col), (c_row));
+		printf("\x1B[%d;%dH", (c_row), (c_col));
 		fflush(stdout);
 	}
 }
 
-ae2f_MAC((L, )) ae2fsys_get_trm_size_imp(
+ae2f_MAC((L, )) ae2fsys_get_trm_size_simple_imp(
 		ae2fsys_trmpos_t	r_cols,
 		ae2fsys_trmpos_t	r_rows
 		)

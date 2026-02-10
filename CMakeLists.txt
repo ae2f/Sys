@@ -12,6 +12,7 @@ project(Sys VERSION 0.0.0 LANGUAGES C CXX)
 
 # Set this source directory as the tree root for project.
 set(ae2f_ProjRoot ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Tree root for project")
+set(ae2f_BinRoot ${CMAKE_CURRENT_BINARY_DIR} CACHE STRING "Tree root for project")
 set(ae2f_submod  .submod CACHE STRING "Relative path to submodule (subdirectory)")
 set(ae2f_CoreScript_Wh ${ae2f_ProjRoot}/${ae2f_submod}/ae2f/CoreScript)
 
@@ -38,7 +39,7 @@ if(NOT TARGET ae2f::SysCore)
 		${PROJECT_SOURCE_DIR}/Config/Sys-Base.cmake.in
 		)
 
-	if(WIN32)
+	if(WIN32 OR MINGW OR CYGWIN)
 		target_link_libraries(${ae2f__SysCore__TENT} INTERFACE ws2_32)
 	endif()
 endif()
@@ -49,7 +50,6 @@ if(NOT TARGET ae2f::Sys)
 	file(GLOB_RECURSE sys-src ${PROJECT_SOURCE_DIR}/src/*)
 
 	ae2f_Macro_init(1 30 30)
-
 	ae2f_Macro_Lib_V2(
 		ae2f Sys INTERFACE 
 		${PROJECT_SOURCE_DIR}/src "*.def.c" 
