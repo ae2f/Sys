@@ -1,6 +1,7 @@
 #ifndef ae2f_Sys_sock_WIN_auto_h
 #define ae2f_Sys_sock_WIN_auto_h
 
+#include "ae2f/Sys/Sock.h"
 #include <ae2f/Sys.h>
 
 #if ae2f_Sys_WIN(!)0
@@ -21,8 +22,12 @@ ae2f_MAC() ae2fsys_set_sock_blkmode_imp(
 		enum AE2FSYS_SOCK_	res
 		)
 {
-	(rdwr_mem) = !!(c_blkmode);
-	(res) = -(!!ioctlsocket((h_sock), FIONBIO, &(rdwr_mem)));
+	(rdwr_mem) = ae2f_reinterpret_cast(ae2fsys_sock_blkmode_t, !!(c_blkmode));
+	(res) = ae2f_reinterpret_cast(enum AE2FSYS_SOCK_, -(!!ioctlsocket(
+					(h_sock)
+					, FIONBIO
+					, &(rdwr_mem)))
+			);
 }
 
 #else
