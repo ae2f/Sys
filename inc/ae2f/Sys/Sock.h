@@ -6,6 +6,9 @@
 #ifndef ae2f_Sys_WSock_h
 #define ae2f_Sys_WSock_h
 
+#include <ae2f/Cast.h>
+#include <ae2f/Keys.h>
+
 #include "./sock/POSIX.auto.h"
 #include "./sock/WIN.auto.h"
 #include "./sock/_linux.auto.h"
@@ -43,5 +46,16 @@
  * @param	res
  * */
 #define ae2fsys_set_sock_blkmode_imp	_ae2fsys_set_sock_blkmode_imp
+
+
+/**
+ * @fn	bool ae2fsys_checksock_naive(ae2fsys_sock_t h_sock);
+ * @brief	
+ * returns if `h_sock` is valid.	\n
+ * Naive, cross-platform option.
+ * */
+#define	ae2fsys_checksock_naive(h_sock)	\
+	((h_sock) != AE2FSYS_SOCK_INVL	\
+	&& ae2f_unexpected(ae2f_reinterpret_cast(int, h_sock) < 0))
 
 #endif
