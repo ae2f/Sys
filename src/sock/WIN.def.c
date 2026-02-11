@@ -11,6 +11,9 @@
 typedef	SOCKET	ae2fsys_sock_t;
 typedef u_long	ae2fsys_sock_blkmode_t;
 
+
+#define	AE2FSYS_SOCK_INVL	INVALID_SOCKET
+
 ae2f_MAC() ae2fsys_set_sock_blkmode_imp(
 		ae2fsys_sock_blkmode_t	rdwr_mem,
 		const ae2fsys_sock_t	h_sock,

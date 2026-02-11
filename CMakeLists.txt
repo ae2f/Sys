@@ -52,9 +52,9 @@ if(NOT TARGET ae2f::Sys)
 	ae2f_Macro_init(1 30 30)
 	ae2f_Macro_Lib_V2(
 		ae2f Sys INTERFACE 
-		${PROJECT_SOURCE_DIR}/src "*.def.c" 
-		${PROJECT_SOURCE_DIR}/src "*.def.c" 
-		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys ".auto.h"
+		${PROJECT_SOURCE_DIR}/src/ "*.def.c" 
+		${PROJECT_SOURCE_DIR}/src/ "*.def.c" 
+		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/ ".auto.h"
 		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
 		inc ON
 		inc/ae2f/Sys.h ${sys-inc}
