@@ -1,14 +1,14 @@
 #ifndef ae2f_Sys_sock_WIN_auto_h
 #define ae2f_Sys_sock_WIN_auto_h
 
-#include "ae2f/Cast.h"
-#include "ae2f/Sys/Sock.h"
 #include <ae2f/Sys.h>
 
 #if ae2f_Sys_WIN(!)0
 
 #include <windows.h>
 #include <ae2f/Sys/Sock.core.h>
+#include <ae2f/Cast.h>
+#include <ae2f/Keys.h>
 
 typedef	SOCKET	ae2fsys_sock_t;
 typedef u_long	ae2fsys_sock_blkmode_t;

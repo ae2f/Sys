@@ -6,12 +6,12 @@
 #ifndef ae2f_Sys_WSock_h
 #define ae2f_Sys_WSock_h
 
-#include <ae2f/Cast.h>
-#include <ae2f/Keys.h>
-
 #include "./sock/POSIX.auto.h"
 #include "./sock/WIN.auto.h"
 #include "./sock/_linux.auto.h"
+
+#include <ae2f/Cast.h>
+#include <ae2f/Keys.h>
 
 /** 
  * @typedef	ae2fsys_sock_t
