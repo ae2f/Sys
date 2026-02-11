@@ -56,6 +56,6 @@
  * */
 #define	ae2fsys_checksock_naive(h_sock)	\
 	((h_sock) != AE2FSYS_SOCK_INVL	\
-	&& ae2f_unexpected(ae2f_reinterpret_cast(int, h_sock) < 0))
+	&& ae2f_expected(ae2f_reinterpret_cast(int, h_sock) >= 0))
 
 #endif
