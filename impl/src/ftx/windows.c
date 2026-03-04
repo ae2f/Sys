@@ -23,8 +23,8 @@ ae2f_MAC((L, )) ae2fsys_ftxwait_imp(
 		const struct timespec * const	pprm_time_opt
 		)
 {
-	ae2fsys_ftxel_t L = (prm_val);
-	switch((ret_err) = WaitOnAddress(
+	LONG L = (prm_val);
+	switch(WaitOnAddress(
 			prm_uaddr
 			, &L
 			, sizeof(ae2fsys_ftxel_t)
