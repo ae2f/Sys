@@ -20,7 +20,6 @@ for _ae2f_MAC_BUILD in ${__ae2f_IS_SHARED[@]}; do
 
 	cmake -S . -B $builddir \
 		-DCMAKE_C_STANDARD=$stdc \
-		-DCMAKE_CXX_STANDARD=$stdcc \
 		$maker $1 $2 \
 		-Dae2f_CXX=$_ae2f_CXX \
 		-Dae2f_IS_SHARED=$_ae2f_IS_SHARED \
