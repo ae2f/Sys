@@ -38,7 +38,7 @@
 #endif
 
 #if	AE2FSYS_FTX_OTHERS_LIB_STATIC
-#define	S_EXTERN	static
+#define	S_EXTERN	ae2f_unused static
 #elif	AE2FSYS_FTX_OTHERS_LIB_INIT
 #define	S_EXTERN	ae2f_WhenCXX(extern "C")
 #else
@@ -74,11 +74,6 @@ typedef	int ae2fsys_ftxel_t;
 
 #include <ae2f/pat/macrofunc.h>
 #include <errno.h>
-
-#if !__ae2f_MACRO_GENERATED
-_ae2fsys_ftxlibdecl(static);
-_ae2fsys_ftxlibdef(static);
-#endif
 
 ae2f_MAC((L, )) ae2fsys_ftxwait_imp(
 		enum AE2FSYS_FTX_	ret_err,

@@ -13,12 +13,9 @@ int A = 0;
 
 ae2fsys_thrdfn_t AThreadNotifier;
 
-ae2fsys_thrdres_t AThreadNotifier(ae2fsys_thrdprm_t prm) {
+ae2fsys_thrdres_t AThreadNotifier (ae2f_unused ae2fsys_thrdprm_t prm) {
 	struct timespec	req, rem;
 	register long		done;
-
-
-	(void)prm; /** ignore */
 
 	req.tv_sec = 0;
 	req.tv_nsec = 4000;
