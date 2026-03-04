@@ -4,8 +4,8 @@ int main(void);
 #define	AE2FSYS_FTX_OTHERS_LIB_INIT	1
 
 
-#include <ae2f/Sys/.ftx/others.h>
 #include <ae2f/Sys/Thrd.h>
+#include <ae2f/Sys/Ftx.h>
 #include <ae2f/cc.h>
 
 #include <stdio.h>
@@ -26,6 +26,7 @@ static ae2fsys_thrdres_t	waker(ae2f_unused ae2fsys_thrdprm_t uaddr) {
 	REQ.tv_nsec	= 30000000;
 	puts("[wake]\t1s delay done");
 	_ae2fsys_sleep_thrd_imp(STAT, &REQ, &REM);
+	*(ae2fsys_ftxel_t*)uaddr = 1;
 	_ae2fsys_ftxwake_one_imp(L, FTXSTAT, (ae2fsys_ftxel_t*)uaddr);
 	return (ae2fsys_thrdres_t)0;
 }
