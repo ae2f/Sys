@@ -19,7 +19,7 @@ typedef	volatile LONG ae2fsys_ftxel_t;
 ae2f_MAC((L, )) ae2fsys_ftxwait_imp(
 		enum AE2FSYS_FTXWAIT_		ret_err,
 		ae2fsys_ftxel_t* const		prm_uaddr,
-		const ae2f_SysFtxEl_t		prm_val,
+		const ae2fsys_ftxel_t		prm_val,
 		const struct timespec * const	pprm_time_opt
 		)
 {
@@ -27,7 +27,7 @@ ae2f_MAC((L, )) ae2fsys_ftxwait_imp(
 	switch((ret_err) = WaitOnAddress(
 			prm_uaddr
 			, L
-			, sizeof(ae2f_SysFtxEl_t)
+			, sizeof(ae2fsys_ftxel_t)
 			, (pprm_time_opt)
 			? (pprm_time_opt)->tv_nsec + (pprm_time_opt)->tv_sec * 1000 
 			: INFINITE
