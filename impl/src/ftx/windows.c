@@ -11,6 +11,7 @@
 /***********************************/
 
 #include <windows.h>
+#include <ae2f/Keys.h>
 #include <ae2f/pat/macrofunc.h>
 
 typedef	volatile LONG ae2fsys_ftxel_t;

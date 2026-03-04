@@ -9,7 +9,7 @@ int main(void);
 #include <stdio.h>
 
 
-static ae2fsys_thrdres_t	waker(ae2fsys_thrdprm_t uaddr) {
+static ae2fsys_thrdres_t	waker(ae2f_unused ae2fsys_thrdprm_t uaddr) {
 	ae2f_unused long	STAT;
 	ae2f_unused enum AE2FSYS_FTX_ FTXSTAT;
 	struct timespec REQ;
