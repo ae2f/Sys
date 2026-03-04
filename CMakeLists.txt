@@ -84,6 +84,7 @@ if(NOT TARGET ae2f::Sys)
 		ae2f::SysThrd
 		ae2f::SysInet
 		ae2f::SysSock
+		ae2f::SysTrm
 		)
 
 	ae2f_CoreTestTentVerbose(ae2f-Sys test)
