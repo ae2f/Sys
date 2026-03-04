@@ -2,8 +2,8 @@
  * @file	others.c
  * @brief	inet
  * */
-#ifndef	ae2fsys_inet_windows_h
-#define	ae2fsys_inet_windows_h
+#ifndef	ae2fsys_inet_others_h
+#define	ae2fsys_inet_others_h
 #include <ae2f/Sys/.inet/core.h>
 #if	AE2FSYS_INET_OTHERS
 /************************/
