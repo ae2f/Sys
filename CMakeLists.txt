@@ -1,78 +1,90 @@
-option(ae2f_TEST "" ON)
-option(ae2f_MAC_BUILD "" 	ON)
-option(ae2f_IS_SHARED "" 	ON)
-option(ae2f_Sys_DEVEL ""	OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-
+cmake_minimum_required(VERSION 3.10)
 enable_testing()
 
-cmake_minimum_required(VERSION 3.10)
-project(Sys VERSION 0.0.0 LANGUAGES C CXX)
-
-# Set this source directory as the tree root for project.
 set(ae2f_ProjRoot ${CMAKE_CURRENT_SOURCE_DIR} CACHE STRING "Tree root for project")
 set(ae2f_BinRoot ${CMAKE_CURRENT_BINARY_DIR} CACHE STRING "Tree root for project")
 set(ae2f_submod  .submod CACHE STRING "Relative path to submodule (subdirectory)")
-set(ae2f_CoreScript_Wh ${ae2f_ProjRoot}/${ae2f_submod}/ae2f/CoreScript)
+set(ae2f_Preproc_Wh ${ae2f_ProjRoot}/${ae2f_submod}/ae2f/Preproc)
+option(ae2f_TEST	ON ON)
 
 # Execute git to fetch CoreScript when repository does not exist
-if(NOT EXISTS ${ae2f_CoreScript_Wh})
+if(NOT EXISTS ${ae2f_Preproc_Wh})
 	execute_process(
-		COMMAND git clone https://codeberg.org/ae2f/CoreScript
-		${ae2f_CoreScript_Wh}
+		COMMAND git clone https://codeberg.org/ae2f/Preproc
+		${ae2f_Preproc_Wh}
 		)
 endif()
 
 # add subdirectory
-if(NOT TARGET ae2f::CoreScript)
-	add_subdirectory(${ae2f_CoreScript_Wh} ${ae2f_submod}/ae2f/CoreScript)
+if(NOT TARGET ae2f::Preproc)
+	add_subdirectory(${ae2f_Preproc_Wh} ${ae2f_submod}/ae2f/Preproc)
 endif()
 
-# FIXME
-if(NOT TARGET ae2f::SysCore)
-	ae2f_CoreLibFetchX(ae2f Preproc	main)
-	ae2f_CoreLibFetchX(ae2f Core	main)
+# ==========================
+if(NOT TARGET ae2f::Sys)
+	ae2f_CoreLibFetchX(ae2f Core main)
+	ae2f_CoreLibFetchX(ae2f Pat master)
+
+	ae2f_Macro_init(1 30 100)
+
+	project(SysCore VERSION 0)
+	file(GLOB_RECURSE ae2f-core-inc ${PROJECT_SOURCE_DIR}/inc/*)
 
 	ae2f_CoreLibTentConfigCustom(
-		SysCore INTERFACE inc ae2f 
-		${PROJECT_SOURCE_DIR}/Config/Sys-Base.cmake.in
+		SysCore INTERFACE inc ae2f
+		${PROJECT_SOURCE_DIR}/cfg/SysCore.cmake.in
+		${ae2f-core-inc}
 		)
 
-	if(WIN32 OR MINGW OR CYGWIN)
-		target_link_libraries(${ae2f__SysCore__TENT} INTERFACE ws2_32)
-	endif()
-endif()
+	target_link_libraries(ae2f-SysCore INTERFACE ae2f::Pat)
+	add_subdirectory(impl)
 
-if(NOT TARGET ae2f::Sys)
-	ae2f_CoreLibFetchX(ae2f	c89atomic master)
-	file(GLOB_RECURSE sys-inc ${PROJECT_SOURCE_DIR}/inc/)
-	file(GLOB_RECURSE sys-src ${PROJECT_SOURCE_DIR}/src/*)
-
-	ae2f_Macro_init(1 30 30)
-	ae2f_Macro_Lib_V2(
-		ae2f Sys INTERFACE 
-		${PROJECT_SOURCE_DIR}/src/ "*.def.c" 
-		${PROJECT_SOURCE_DIR}/src/ "*.def.c" 
-		${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/ ".auto.h"
-		${PROJECT_SOURCE_DIR}/Config/Sys.cmake.in 
-		inc ON
-		inc/ae2f/Sys.h ${sys-inc}
+	# =============================
+	project(SysThrdCore	VERSION 0)
+	ae2f_CoreLibTentConfigCustom(
+		SysThrdCore INTERFACE inc ae2f
+		${ae2f_ProjRoot}/cfg/SysThrdCore.cmake.in
 		)
 
+	ae2f_CoreLibFetch(ae2f c89atomic master)
+	target_link_libraries(ae2f-SysThrdCore INTERFACE ae2f::SysCore INTERFACE c89atomic)
 	install(
 		TARGETS c89atomic c89atomic_common
-		EXPORT SysTargets
+		EXPORT SysThrdCoreTargets
 		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 		)
 
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Core)
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::SysCore)
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE ae2f::Preproc)
-	target_link_libraries(${ae2f__Sys__TENT} INTERFACE c89atomic)
+	if(WIN32 OR MINGW OR CYGWIN OR LINUX)
+	else()
+		target_link_libraries(ae2f-SysThrdCore INTERFACE pthread)
+	endif()
 
-	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/primal)
-	ae2f_CoreTestTentVerbose(${ae2f__Sys__TENT} test/enums)
+	# =============================
+	project(SysInetCore	VERSION 0)
+	ae2f_CoreLibTentConfigCustom(
+		SysInetCore INTERFACE inc ae2f
+		${ae2f_ProjRoot}/cfg/SysInetCore.cmake.in
+		)
+
+	if(WIN32 OR MINGW OR CYGWIN)
+		target_link_libraries(ae2f-SysInetCore INTERFACE ws2_32)
+	endif()
+
+	# =============================
+	ae2f_CoreLibTentConfigCustom(
+		Sys INTERFACE inc ae2f
+		${PROJECT_SOURCE_DIR}/cfg/Sys.cmake.in
+		)
+
+	target_link_libraries(
+		ae2f-Sys	INTERFACE
+		ae2f::SysFtx
+		ae2f::SysThrd
+		ae2f::SysInet
+		ae2f::SysSock
+		)
+
+	ae2f_CoreTestTentVerbose(ae2f-Sys test)
 endif()
