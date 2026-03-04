@@ -26,7 +26,7 @@ ae2f_MAC((L, )) ae2fsys_ftxwait_imp(
 	ae2fsys_ftxel_t L = (prm_val);
 	switch((ret_err) = WaitOnAddress(
 			prm_uaddr
-			, L
+			, &L
 			, sizeof(ae2fsys_ftxel_t)
 			, (pprm_time_opt)
 			? (pprm_time_opt)->tv_nsec + (pprm_time_opt)->tv_sec * 1000 

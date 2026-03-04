@@ -34,7 +34,8 @@ static ae2fsys_thrdres_t	waker(ae2f_unused ae2fsys_thrdprm_t uaddr) {
 static ae2fsys_thrdres_t	waiter(ae2f_unused ae2fsys_thrdprm_t uaddr) {
 	ae2f_unused enum AE2FSYS_FTX_ FTXSTAT;
 	puts("[wait]\twaiting");
-	_ae2fsys_ftxwait_imp(L, FTXSTAT, (ae2fsys_ftxel_t*)uaddr, 0, 0);
+	_ae2fsys_ftxwait_imp(L, FTXSTAT, (ae2fsys_ftxel_t*)uaddr
+			, (struct timespec*)0, (struct timespec*)0);
 	puts("[wait]\twaiting done");
 	return (ae2fsys_thrdres_t)0;
 }
