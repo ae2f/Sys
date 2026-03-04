@@ -6,6 +6,8 @@
 #include <time.h>
 #include <assert.h>
 #include <c89atomic.h>
+#include <ae2f/cc.h>
+#include <ae2f/c90/StdInt.h>
 
 
 int A = 0;
@@ -15,7 +17,7 @@ ae2fsys_thrdfn_t AThreadNotifier;
 
 ae2fsys_thrdres_t AThreadNotifier (ae2f_unused ae2fsys_thrdprm_t prm) {
 	struct timespec	req, rem;
-	register long		done;
+	long		done;
 
 	req.tv_sec = 0;
 	req.tv_nsec = 4000;
@@ -81,7 +83,7 @@ int main(void) {
 	printf(
 			"Thread main joined %p with retval %d\n"
 			, id_for_printf.m_v
-			, ae2f_static_cast(int, ret_rtn)
+			, ae2f_static_cast(int, (intptr_t)ret_rtn)
 			);
 
 	ae2fsys_join_thrd_imp(
@@ -97,7 +99,7 @@ int main(void) {
 	printf(
 			"Thread main joined %p with retval %d\n"
 			, id_for_printf.m_v
-			, ae2f_static_cast(int, ret_rtn)
+			, ae2f_static_cast(int, (intptr_t)ret_rtn)
 			);
 
 

@@ -6,6 +6,7 @@ int main(void);
 
 #include <ae2f/Sys/.ftx/others.h>
 #include <ae2f/Sys/Thrd.h>
+#include <ae2f/cc.h>
 
 #include <stdio.h>
 
