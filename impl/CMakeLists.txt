@@ -13,7 +13,7 @@ ae2f_Macro_Lib_V2(
 	inc ON
 	)
 
-target_link_libraries(ae2f-SysFtx INTERFACE ae2f::SysCore)
+target_link_libraries(ae2f-SysFtx INTERFACE ae2f::SysFtxCore)
 ae2f_CoreTestTentVerbose(ae2f-SysFtx ${PROJECT_SOURCE_DIR}/test/ftx)
 
 # =================

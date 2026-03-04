@@ -37,7 +37,6 @@ if(NOT TARGET ae2f::Sys)
 		)
 
 	target_link_libraries(ae2f-SysCore INTERFACE ae2f::Pat)
-	add_subdirectory(impl)
 
 	# =============================
 	project(SysThrdCore	VERSION 0)
@@ -62,6 +61,21 @@ if(NOT TARGET ae2f::Sys)
 	endif()
 
 	# =============================
+
+	project(SysFtxCore	VERSION 0)
+	ae2f_CoreLibTentConfigCustom(
+		SysFtxCore INTERFACE inc ae2f
+		${ae2f_ProjRoot}/cfg/SysFtxCore.cmake.in
+		)
+
+	target_link_libraries(ae2f-SysFtxCore INTERFACE ae2f::SysCore)
+
+	if(WIN32 OR MINGW OR CYGWIN)
+		target_link_libraries(ae2f-SysFtxCore INTERFACE Synchronization)
+	endif()
+
+	# =============================
+
 	project(SysInetCore	VERSION 0)
 	ae2f_CoreLibTentConfigCustom(
 		SysInetCore INTERFACE inc ae2f
@@ -73,6 +87,8 @@ if(NOT TARGET ae2f::Sys)
 	endif()
 
 	# =============================
+
+	add_subdirectory(impl)
 	ae2f_CoreLibTentConfigCustom(
 		Sys INTERFACE inc ae2f
 		${PROJECT_SOURCE_DIR}/cfg/Sys.cmake.in
