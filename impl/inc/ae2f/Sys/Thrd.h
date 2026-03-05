@@ -3,7 +3,7 @@
 
 #include "./.thrd/linux.h"
 #include "./.thrd/windows.h"
-#include "./.thrd/others.h"
+#include "./.thrd/pthread.h"
 
 /**
  * @typedef	ae2fsys_thrdres_t

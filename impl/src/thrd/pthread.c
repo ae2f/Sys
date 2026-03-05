@@ -1,12 +1,12 @@
 /**
- * @file	others.c
- * @brief	pthread
+ * @file	pthread.c
+ * @brief	posix thead
  * */
 
-#ifndef	ae2fsys_thrd_others_h
-#define	ae2fsys_thrd_others_h
+#ifndef	ae2fsys_thrd_pthread_h
+#define	ae2fsys_thrd_pthread_h
 #include <ae2f/Sys/.thrd/core.h>
-#if	AE2FSYS_THRD_OTHERS
+#if	AE2FSYS_THRD_PTHREAD
 
 /************************/
 
