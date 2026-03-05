@@ -9,7 +9,7 @@ ae2f_Macro_Lib_V2(
 	${PROJECT_SOURCE_DIR}/src/ftx		"NOTHING" 
 	${PROJECT_SOURCE_DIR}/src/ftx		"*.c" 
 	${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/.ftx	".h"
-	${ae2f_ProjRoot}/cfg/SysFtx.cmake.in 
+	${PROJECT_SOURCE_DIR}/../cfg/SysFtx.cmake.in 
 	inc ON
 	)
 
@@ -23,7 +23,7 @@ ae2f_Macro_Lib_V2(
 	${PROJECT_SOURCE_DIR}/src/thrd			"NOTHING" 
 	${PROJECT_SOURCE_DIR}/src/thrd			"*.c" 
 	${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/.thrd	".h"
-	${ae2f_ProjRoot}/cfg/SysThrd.cmake.in 
+	${PROJECT_SOURCE_DIR}/../cfg/SysThrd.cmake.in 
 	inc ON
 	)
 target_link_libraries(ae2f-SysThrd INTERFACE ae2f::SysThrdCore)
@@ -36,7 +36,7 @@ ae2f_Macro_Lib_V2(
 	${PROJECT_SOURCE_DIR}/src/sock			"NOTHING" 
 	${PROJECT_SOURCE_DIR}/src/sock			"*.c" 
 	${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/.sock	".h"
-	${ae2f_ProjRoot}/cfg/SysSock.cmake.in 
+	${PROJECT_SOURCE_DIR}/../cfg/SysSock.cmake.in 
 	inc ON
 	)
 target_link_libraries(ae2f-SysSock INTERFACE ae2f::SysInetCore)
@@ -48,7 +48,7 @@ ae2f_Macro_Lib_V2(
 	${PROJECT_SOURCE_DIR}/src/inet			"NOTHING" 
 	${PROJECT_SOURCE_DIR}/src/inet			"*.c" 
 	${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/.inet	".h"
-	${ae2f_ProjRoot}/cfg/SysInet.cmake.in 
+	${PROJECT_SOURCE_DIR}/../cfg/SysInet.cmake.in 
 	inc ON
 	)
 target_link_libraries(ae2f-SysInet INTERFACE ae2f::SysSock)
@@ -60,7 +60,7 @@ ae2f_Macro_Lib_V2(
 	${PROJECT_SOURCE_DIR}/src/trm			"NOTHING" 
 	${PROJECT_SOURCE_DIR}/src/trm			"*.c" 
 	${PROJECT_SOURCE_DIR}/inc/ae2f/Sys/.trm		".h"
-	${ae2f_ProjRoot}/cfg/SysTrm.cmake.in 
+	${PROJECT_SOURCE_DIR}/../cfg/SysTrm.cmake.in 
 	inc ON
 	)
 target_link_libraries(ae2f-SysTrm INTERFACE ae2f::SysCore)

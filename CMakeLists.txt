@@ -42,7 +42,7 @@ if(NOT TARGET ae2f::Sys)
 	project(SysThrdCore	VERSION 0)
 	ae2f_CoreLibTentConfigCustom(
 		SysThrdCore INTERFACE inc ae2f
-		${ae2f_ProjRoot}/cfg/SysThrdCore.cmake.in
+		${PROJECT_SOURCE_DIR}/cfg/SysThrdCore.cmake.in
 		)
 
 	ae2f_CoreLibFetch(ae2f c89atomic master)
@@ -65,7 +65,7 @@ if(NOT TARGET ae2f::Sys)
 	project(SysFtxCore	VERSION 0)
 	ae2f_CoreLibTentConfigCustom(
 		SysFtxCore INTERFACE inc ae2f
-		${ae2f_ProjRoot}/cfg/SysFtxCore.cmake.in
+		${PROJECT_SOURCE_DIR}/cfg/SysFtxCore.cmake.in
 		)
 
 	target_link_libraries(ae2f-SysFtxCore INTERFACE ae2f::SysCore)
@@ -79,7 +79,7 @@ if(NOT TARGET ae2f::Sys)
 	project(SysInetCore	VERSION 0)
 	ae2f_CoreLibTentConfigCustom(
 		SysInetCore INTERFACE inc ae2f
-		${ae2f_ProjRoot}/cfg/SysInetCore.cmake.in
+		${PROJECT_SOURCE_DIR}/cfg/SysInetCore.cmake.in
 		)
 
 	if(WIN32 OR MINGW OR CYGWIN)

@@ -1,3 +1,8 @@
+/**
+ * @file	others.c
+ * @brief	ansi & posix call
+ * */
+
 #ifndef	ae2fsys_trm_others_h
 #define	ae2fsys_trm_others_h
 

@@ -1,12 +1,12 @@
 /**
- * @file	openbsd.c
- * @brief	futex
+ * @file	futex.c
+ * @brief	futex (sys/futex.h)
  * */
 
-#ifndef	ae2fsys_ftx_openbsd_h
-#define	ae2fsys_ftx_openbsd_h
+#ifndef	ae2fsys_ftx_futex_h
+#define	ae2fsys_ftx_futex_h
 #include <ae2f/Sys/.ftx/core.h>
-#if	_AE2FSYS_PROBE_OPENBSD
+#if	_AE2FSYS_FTX_FUTEX
 /*********************/
 
 #include <sys/time.h>

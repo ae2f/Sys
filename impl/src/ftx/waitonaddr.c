@@ -1,12 +1,12 @@
 /** 
- * @file	windows.c 
- * @brief	WaitOnAddress | WakeByAddressSingle
+ * @file	waitonaddr.c 
+ * @brief	win32
  * */
 
-#ifndef	ae2fsys_ftx_windows_h
-#define	ae2fsys_ftx_windows_h
+#ifndef	ae2fsys_ftx_waitonaddr_h
+#define	ae2fsys_ftx_waitonaddr_h
 #include <ae2f/Sys/.ftx/core.h>
-#if	_AE2FSYS_FTX_WINDOWS
+#if	_AE2FSYS_FTX_WAITONADDR
 
 /***********************************/
 

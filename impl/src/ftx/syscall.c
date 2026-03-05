@@ -1,14 +1,14 @@
 /** 
- * @file	linux.c 
- * @brief	futex
+ * @file	syscall.c 
+ * @brief	futex (linux syscall)
  * */
 
-#ifndef	ae2fsys_ftx_linux_h
-#define	ae2fsys_ftx_linux_h
+#ifndef	ae2fsys_ftx_syscall_h
+#define	ae2fsys_ftx_syscall_h
 
 #include <ae2f/Sys/.ftx/core.h>
 
-#if	_AE2FSYS_PROBE_LINUX
+#if	_AE2FSYS_FTX_SYSCALL
 
 /******************************/
 

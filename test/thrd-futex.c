@@ -1,7 +1,7 @@
 int main(void);
 
-/** global lock initiation for others(posix) */
-#define	AE2FSYS_FTX_OTHERS_LIB_INIT	1
+/** global lock initiation for pthread */
+#define	AE2FSYS_FTX_PTHREAD_LIB_INIT	1
 
 
 #include <ae2f/Sys/Thrd.h>
